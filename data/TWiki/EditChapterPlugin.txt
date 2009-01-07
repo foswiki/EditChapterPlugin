@@ -9,7 +9,7 @@
 <table style="float:right">
 <tr>
   <td><img src="%ATTACHURLPATH%/wikiringlogo40x40.png"></td>
-  <td><a href="http://wikiring.de" title="Make your Wiki ring!" style="text-decoration:none">
+  <td><a href="http://wikiring.com" title="Make your Wiki ring!" style="text-decoration:none">
       Powered by <br /> <nop>WikiRing Consultants </a>
   </td>
 </tr>
@@ -18,11 +18,11 @@ This plugin implements a simple section editing feature comparable to
 the one available for [[http://en.wikipedia.org/wiki/Help:Section#Section_editing][MediaWiki]].
 It adds link urls to headings so that users can edit the section below. Edit links are
 enabeld only for those users that have edit access. Edit links are hidden unless you hover
-with the mouse pointer over them and then displays the "Universal Wiki Edit Button" 
-<img src="%PUBURLPATH%/%WEB%/%TOPIC%/uweb-g.gif" border="1" />.
+with the mouse pointer over them and then displays an icon, defaulting to a pencil
+<img src="%PUBURLPATH%/%WEB%/%TOPIC%/pencil.png" border="0" />.
 
 Once installed, the plugin automatically enables sectional editing without any further
-provisions. Note, that it will only detect headings created using TWiki-markup, that is
+provisions. Note, that it will only detect headings created using TML (topic markup language), that is
 writing =---++ heading= and the like. It is not sensitive to normal HTML-markup, so it
 does not add an edit link to normal =&lt;h2>headings&lt;/h2>=.
 
@@ -33,13 +33,13 @@ then redirect back to the current topic it has been included to.
 
 ---++ Previous work
 There are a couple of other plugins that try to implement a section editing feature, along with some
-other more exotic features. The first plugin of that kind was Foswiki:Extensions/SectionalEditPlugin.
+other more exotic features. The first plugin of that kind was TWiki:Plugins/SectionalEditPlugin.
 Later on, its functionality was extended to process sections in a broader sense in the
-Foswiki:Extensions/MultiEditPlugin. By the time of this writing both plugins were about to
-be merged again into one Foswiki:Extensions/EditSectionPlugin. These three plugins all depend
-on an extra package called Foswiki:Extensions/EditContrib which factors out common code. In addition
-<nop>EditContrib contains a patch to the TWiki core engine, available for TWiki-4.0 and TWiki-4.1.x.
-All these plugins are currently non-functional on TWiki-4.2.
+TWiki:Plugins/MultiEditPlugin. By the time of this writing both plugins were about to
+be merged again into one TWiki:Plugins/EditSectionPlugin. These three plugins all depend
+on an extra package called TWiki:Plugins/EditContrib which factors out common code. In addition
+<nop>EditContrib contains a patch to the core engine, available for TWiki-4.0 and TWiki-4.1.x only.
+All these plugins are currently non-functional.
 
 While first looking at the code of <nop>SectionalEditPlugin, it was clear very soon, that it
 would be better to start from scratch and remove some features for the sake of a cleaner
@@ -118,9 +118,9 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
      users can't specify any other section to be editable in isolation (e.g. using some
      =&lt;section> ... &lt;/section>= markup) other than by giving the respective section
      a heading.
-   1 jQuery: the <nop>EditChapterPlugin currently depends on the JQueryPlugin, used
+   1 jQuery: the <nop>EditChapterPlugin depends on the JQueryPlugin, used
      to hook into the edit interface. You may be facing an increased javascript download overhead in 
-     your TWiki html pages as you are already using Foswiki:Extensions/BehavourContrib, Foswiki:Extensions/TwistyContrib
+     your html pages as you are already using Foswiki:Extensions/BehavourContrib, Foswiki:Extensions/TwistyContrib
      and Foswiki:Extensions/TwistyPlugin. Consider uninstalling these three and replace them with
      Foswiki:Extensions/JQueryTwistyPlugin. You should have installed JQueryPlugin anyway already.
      Last not least you get less javascript but more features.
@@ -134,11 +134,12 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
 Many thanks to the following sponsors for supporting this work:
    * [[http://www.tecdoc.de][TecDoc Informations System <nop>GmbH]]
 
-|  Plugin Author(s): | TWiki:Main/MichaelDaum |
+|  Plugin Author(s): | Michael Daum |
 |  Copyright &copy;: | 2008, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Plugin Version: | v1.15 |
+|  Plugin Version: | v1.20 |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  26 Nov 2008: | replaced the uggly universal edit button with a nice pencil |
 |  26 Jun 2008: | new universal edit button |
 |  29 Apr 2008: | removed "literal" hack again; removed check for body_text context; \
                   only the icon is clickable - was all of the heading before |

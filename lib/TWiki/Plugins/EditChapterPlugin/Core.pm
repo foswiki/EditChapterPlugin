@@ -36,7 +36,7 @@ sub new {
     TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_MAXDEPTH") || 6;
   my $editImg = 
     TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITIMG") || 
-    '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ueb.png" height="16" width="16" border="0" />';
+    '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" border="0" />';
   my $editLabelFormat = 
     TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
     '<span class="ecpHeading">$anchor $heading <a class="ecpEdit" href="$url" title="Edit this chapter">$img</a></span>';
@@ -274,9 +274,19 @@ sub handleEXTRACTCHAPTER {
 
   my $result = substr($text, $fromPos, $length);
 
-  $result = TWiki::entityEncode( $result, "\n" ) if $theEncode;
+  $result = entityEncode( $result, "\n" ) if $theEncode;
   writeDebug("BEGIN RESULT\n$result\nEND RESULT");
   return $result;
+}
+
+sub entityEncode {
+  my ( $text, $extra ) = @_;
+  $extra ||= '';
+
+  $text =~
+    s/([[\x01-\x09\x0b\x0c\x0e-\x1f"%&'*<=>@[_\|$extra])/'&#'.ord($1).';'/ge;
+
+  return $text;
 }
 
 1;
