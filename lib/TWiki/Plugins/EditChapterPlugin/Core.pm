@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2009 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ sub new {
     TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_MAXDEPTH") || 6;
   my $editImg = 
     TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITIMG") || 
-    '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" border="0" />';
+    '<img src="%PUBURLPATH%/%TWIKIWEB%/EditChapterPlugin/pencil.png" height="16" width="16" border="0" />';
   my $editLabelFormat = 
     TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
     '<span class="ecpHeading">$anchor $heading <a class="ecpEdit" href="$url" title="Edit this chapter">$img</a></span>';

@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2009 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,12 +25,12 @@ use vars qw(
 );
 
 $VERSION = '$Rev$';
-$RELEASE = '1.20';
+$RELEASE = '1.21';
 $SHORTDESCRIPTION = 'An easy sectional edit facility';
 
 $header = <<'HERE';
-<link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
-<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
+<link rel="stylesheet" href="%PUBURLPATH%/%TWIKIWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
+<script type="text/javascript" src="%PUBURLPATH%/%TWIKIWEB%/EditChapterPlugin/ecpjavascript.js"></script>
 HERE
 
 
