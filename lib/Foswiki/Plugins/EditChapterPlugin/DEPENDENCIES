@@ -1,1 +1,1 @@
-TWiki::Plugins::JQueryPlugin,>=0.4,perl,Required.
+Foswiki::Plugins::JQueryPlugin,>=0.4,perl,Required.

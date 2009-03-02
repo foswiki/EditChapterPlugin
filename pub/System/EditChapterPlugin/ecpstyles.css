@@ -14,11 +14,11 @@
   padding:0px;
   border:0px;
 }
-/* some twiki fixes */
-.twikiToc img {
+/* some foswiki fixes */
+.foswikiToc img {
   display:none;
 }
-.twikiToc .ecpHeading {
+.foswikiToc .ecpHeading {
   display:inline;
 }
 /* debugging */

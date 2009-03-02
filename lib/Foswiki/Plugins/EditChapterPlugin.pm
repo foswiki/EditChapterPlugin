@@ -13,11 +13,11 @@
 # GNU General Public License for more details, published at
 # http://www.gnu.org/copyleft/gpl.html
 
-package TWiki::Plugins::EditChapterPlugin;
+package Foswiki::Plugins::EditChapterPlugin;
 
 use strict;
 
-use TWiki::Func;
+use Foswiki::Func;
 
 use vars qw( 
   $VERSION $RELEASE $SHORTDESCRIPTION $NO_PREFS_IN_TOPIC
@@ -25,12 +25,12 @@ use vars qw(
 );
 
 $VERSION = '$Rev$';
-$RELEASE = '1.22';
+$RELEASE = '2.00';
 $SHORTDESCRIPTION = 'An easy sectional edit facility';
 
 $header = <<'HERE';
-<link rel="stylesheet" href="%PUBURLPATH%/%TWIKIWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
-<script type="text/javascript" src="%PUBURLPATH%/%TWIKIWEB%/EditChapterPlugin/ecpjavascript.js"></script>
+<link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
+<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
 HERE
 
 
@@ -41,7 +41,7 @@ sub initPlugin {
   $sharedCore = undef;
   $doneHeader = 0;
 
-  TWiki::Func::registerTagHandler('EXTRACTCHAPTER', \&EXTRACTCHAPTER);
+  Foswiki::Func::registerTagHandler('EXTRACTCHAPTER', \&EXTRACTCHAPTER);
 
   return 1;
 }
@@ -55,10 +55,10 @@ sub finishHandler {
 sub initCore {
 
   unless ($sharedCore) {
-    eval 'use TWiki::Plugins::EditChapterPlugin::Core;';
+    eval 'use Foswiki::Plugins::EditChapterPlugin::Core;';
     die $@ if $@;
 
-    $sharedCore = new TWiki::Plugins::EditChapterPlugin::Core(@_);
+    $sharedCore = new Foswiki::Plugins::EditChapterPlugin::Core(@_);
   }
 
   return $sharedCore;
@@ -72,7 +72,7 @@ sub commonTagsHandler {
     $doneHeader = 1 if ($_[0] =~ s/<head>(.*?[\r\n]+)/<head>$1$header/o);
   }
 
-  my $context = TWiki::Func::getContext();
+  my $context = Foswiki::Func::getContext();
   return unless $context->{'view'};
   return unless $context->{'authenticated'};
 

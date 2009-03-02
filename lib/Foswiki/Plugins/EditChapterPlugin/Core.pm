@@ -13,9 +13,9 @@
 # GNU General Public License for more details, published at
 # http://www.gnu.org/copyleft/gpl.html
 
-package TWiki::Plugins::EditChapterPlugin::Core;
+package Foswiki::Plugins::EditChapterPlugin::Core;
 
-use TWiki::Func;
+use Foswiki::Func;
 use strict;
 use constant DEBUG => 0; # toggle me
 
@@ -31,16 +31,16 @@ sub new {
   my $topic = shift;
 
   my $minDepth = 
-    TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_MINDEPTH") || 1;
+    Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_MINDEPTH") || 1;
   my $maxDepth = 
-    TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_MAXDEPTH") || 6;
+    Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_MAXDEPTH") || 6;
   my $editImg = 
-    TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITIMG") || 
-    '<img src="%PUBURLPATH%/%TWIKIWEB%/EditChapterPlugin/pencil.png" height="16" width="16" border="0" />';
+    Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITIMG") || 
+    '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" border="0" />';
   my $editLabelFormat = 
-    TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
+    Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
     '<span class="ecpHeading">$anchor $heading <a class="ecpEdit" href="$url" title="Edit this chapter">$img</a></span>';
-  my $wikiName = TWiki::Func::getWikiName();
+  my $wikiName = Foswiki::Func::getWikiName();
 
   my $this = {
     minDepth => $minDepth,
@@ -55,7 +55,7 @@ sub new {
   };
 
   my $enabled = 
-    TWiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_ENABLED") || 'on';
+    Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_ENABLED") || 'on';
 
   $enabled = ($enabled eq 'on')?1:0;
   $this->{enabled}{$web.'.'.$topic} = $enabled;
@@ -85,7 +85,7 @@ sub commonTagsHandler {
 
   my $topic = $_[1];
   my $web = $_[2];
-  my $insideInclude = $_[3] || TWiki::Func::getContext()->{insideInclude} || 0;
+  my $insideInclude = $_[3] || Foswiki::Func::getContext()->{insideInclude} || 0;
   my $key = $web.'.'.$topic;
 
   #writeDebug("called commonTagsHandler($web, $topic)");
@@ -96,7 +96,7 @@ sub commonTagsHandler {
 
   # disable edit if we have no access
   my $access = 
-    TWiki::Func::checkAccessPermission('edit', $this->{wikiName}, undef, $topic, $web, undef);
+    Foswiki::Func::checkAccessPermission('edit', $this->{wikiName}, undef, $topic, $web, undef);
   $this->{enabled}{$key} = 0 unless $access;
 
   my $enabled = $this->{enabled}{$key};
@@ -149,18 +149,18 @@ sub handleSection {
     $anchor =~ s/\//_/go;
     $anchor = 'chapter_'.$anchor.'_'.$$chapterNumber;
 
-    my $query = TWiki::Func::getCgiQuery();
+    my $query = Foswiki::Func::getCgiQuery();
     my $queryString = $query->query_string();
     $queryString = $queryString?"?$queryString":"";
 
     $args{redirectto} = 
-      TWiki::Func::getScriptUrl($this->{baseWeb}, $this->{baseTopic}, 'view').
+      Foswiki::Func::getScriptUrl($this->{baseWeb}, $this->{baseTopic}, 'view').
       $queryString.
       "#$anchor";
 
 
 
-    my $url = TWiki::Func::getScriptUrl($web, $topic, 'edit', %args);
+    my $url = Foswiki::Func::getScriptUrl($web, $topic, 'edit', %args);
 
     $anchor = '<a name="'.$anchor.'"></a>';
 
@@ -222,15 +222,15 @@ sub handleEXTRACTCHAPTER {
   my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $this->{baseTopic};
 
   ($thisWeb, $thisTopic) = 
-    TWiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
+    Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
 
   #writeDebug("thisWeb=$thisWeb, thisTopic=$thisTopic, theFrom=$theFrom, theTo=$theTo");
 
-  my ($meta, $text) = TWiki::Func::readTopic($thisWeb, $thisTopic);
+  my ($meta, $text) = Foswiki::Func::readTopic($thisWeb, $thisTopic);
 
   # check access permissions
   my $access = 
-    TWiki::Func::checkAccessPermission('view', $this->{wikiName}, $text, $thisTopic, $thisWeb, $meta);
+    Foswiki::Func::checkAccessPermission('view', $this->{wikiName}, $text, $thisTopic, $thisWeb, $meta);
   return '' unless $access;
 
   #writeDebug("BEGIN TEXT\n$text\nEND TEXT");

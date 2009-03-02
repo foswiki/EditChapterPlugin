@@ -31,26 +31,6 @@ edit link will be adjusted approriately, allowing to edit the correct target top
 then redirect back to the current topic it has been included to.
 
 
----++ Previous work
-There are a couple of other plugins that try to implement a section editing feature, along with some
-other more exotic features. The first plugin of that kind was TWiki:Plugins/SectionalEditPlugin.
-Later on, its functionality was extended to process sections in a broader sense in the
-TWiki:Plugins/MultiEditPlugin. By the time of this writing both plugins were about to
-be merged again into one TWiki:Plugins/EditSectionPlugin. These three plugins all depend
-on an extra package called TWiki:Plugins/EditContrib which factors out common code. In addition
-<nop>EditContrib contains a patch to the core engine, available for TWiki-4.0 and TWiki-4.1.x only.
-All these plugins are currently non-functional.
-
-While first looking at the code of <nop>SectionalEditPlugin, it was clear very soon, that it
-would be better to start from scratch and remove some features for the sake of a cleaner
-implementation, that is in sync with recent developments, i.e. <nop>PatternSkin, <nop>NatSkin
-and <nop>NatEditContrib in this area.
-
-The other substantial difference between <nop>SectionalEditPlugin and <nop>EditChapterPlugin is
-that while the former introduces additional code to save an isolated subsection back into the topic,
-the latter always saves complete topics, despite the fact that only part of it is editable.
-
-
 ---++ Configuration
 There are a couple of preference variables to influence how and which headings are processed:
 | *Name* | *Description* | *Default* |
@@ -136,7 +116,7 @@ Many thanks to the following sponsors for supporting this work:
 |  Plugin Author(s): | Michael Daum |
 |  Copyright &copy;: | 2008-2009, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Plugin Version: | v1.22 |
+|  Plugin Version: | v2.00 |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
 |  08 Jan 2009: | certified for foswiki/compat |
 |  26 Nov 2008: | replaced the uggly universal edit button with a nice pencil |
