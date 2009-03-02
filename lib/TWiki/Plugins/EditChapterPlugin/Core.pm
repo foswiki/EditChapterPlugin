@@ -110,7 +110,7 @@ sub commonTagsHandler {
 
   # loop over all lines
   my $chapterNumber = 0;
-  $_[0] =~ s/(^)(---+[\+#]{$this->{minDepth},$this->{maxDepth}}(?:!!)?)([^$this->{translationToken}\+#!].+?)($)/
+  $_[0] =~ s/(^)(---+[\+#]{$this->{minDepth},$this->{maxDepth}}[0-9]*(?:!!)?)([^$this->{translationToken}\+#!].+?)($)/
     $1.
     $this->handleSection($web, $topic, \$chapterNumber, $3, $2, $4, $enabled)
   /gme;
