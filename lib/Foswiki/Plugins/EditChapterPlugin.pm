@@ -28,18 +28,18 @@ $VERSION = '$Rev$';
 $RELEASE = '2.00';
 $SHORTDESCRIPTION = 'An easy sectional edit facility';
 
-$header = <<'HERE';
-<link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
-<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
-HERE
-
 
 ###############################################################################
 sub initPlugin {
   ($baseTopic, $baseWeb) = @_;
 
   $sharedCore = undef;
-  $doneHeader = 0;
+  my $jqPluginName = "JQueryCompatibilityModePlugin";
+  my  $output = "<script language='javascript' type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js'></script>";
+  Foswiki::Func::addToHEAD('EditChapterPlugin_init',$output, $jqPluginName."_jq_init");
+  
+  $output = '<link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />';
+  Foswiki::Func::addToHEAD('EditChapterPlugin_css',$output);
 
   Foswiki::Func::registerTagHandler('EXTRACTCHAPTER', \&EXTRACTCHAPTER);
 
@@ -67,10 +67,6 @@ sub initCore {
 ###############################################################################
 sub commonTagsHandler {
   ### my ( $text, $topic, $web, $meta ) = @_;
-
-  unless ($doneHeader) {
-    $doneHeader = 1 if ($_[0] =~ s/<head>(.*?[\r\n]+)/<head>$1$header/o);
-  }
 
   my $context = Foswiki::Func::getContext();
   return unless $context->{'view'};

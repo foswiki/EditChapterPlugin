@@ -15,7 +15,7 @@ function beforeSubmitHandler(script, action) {
   var text = document.getElementById('text');
   text.value = before.value+chapterText+after.value;
 }
-
+;(function($) {
 /* init gui */
 if (true) {
   $(function() {
@@ -38,3 +38,4 @@ if (true) {
     });
   });
 }
+})(jQuery);

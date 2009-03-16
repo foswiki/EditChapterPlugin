@@ -118,6 +118,7 @@ Many thanks to the following sponsors for supporting this work:
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Plugin Version: | v2.00 |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  XX XX 2009: | Now working with JQueryCompatibilityModePlugin and JQueryPlugin |
 |  08 Jan 2009: | certified for foswiki/compat |
 |  26 Nov 2008: | replaced the uggly universal edit button with a nice pencil |
 |  26 Jun 2008: | new universal edit button |
