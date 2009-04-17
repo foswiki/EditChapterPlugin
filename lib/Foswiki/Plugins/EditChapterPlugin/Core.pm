@@ -152,7 +152,7 @@ sub handleSection {
     $anchor =~ s/\//_/go;
     $anchor = 'chapter_'.$anchor.'_'.$$chapterNumber;
 
-    my $query = Foswiki::Func::getCgiQuery();
+    my $query = Foswiki::Func::getRequestObject();
     my $queryString = $query->query_string();
     $queryString = $queryString?"?$queryString":"";
 

@@ -116,9 +116,9 @@ Many thanks to the following sponsors for supporting this work:
 |  Plugin Author(s): | Michael Daum |
 |  Copyright &copy;: | 2008-2009, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Plugin Version: | v2.00 |
+|  Plugin Version: | v2.01 |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
-|  XX XX 2009: | Now working with JQueryCompatibilityModePlugin and JQueryPlugin |
+|  17 Apr 2009: | working towards a pure foswiki plugin |
 |  08 Jan 2009: | certified for foswiki/compat |
 |  26 Nov 2008: | replaced the uggly universal edit button with a nice pencil |
 |  26 Jun 2008: | new universal edit button |

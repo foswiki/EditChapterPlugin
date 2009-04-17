@@ -25,7 +25,7 @@ use vars qw(
 );
 
 $VERSION = '$Rev$';
-$RELEASE = '2.00';
+$RELEASE = '2.01';
 $SHORTDESCRIPTION = 'An easy sectional edit facility';
 
 $header = <<'HERE';
