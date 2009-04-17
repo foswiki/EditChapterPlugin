@@ -85,6 +85,9 @@ sub commonTagsHandler {
 
   my $topic = $_[1];
   my $web = $_[2];
+
+  return unless $topic;
+
   my $insideInclude = $_[3] || Foswiki::Func::getContext()->{insideInclude} || 0;
   my $key = $web.'.'.$topic;
 
