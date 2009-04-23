@@ -25,7 +25,7 @@ use vars qw(
 );
 
 $VERSION = '$Rev$';
-$RELEASE = '2.01';
+$RELEASE = '2.02';
 $SHORTDESCRIPTION = 'An easy sectional edit facility';
 
 $header = <<'HERE';
@@ -55,9 +55,7 @@ sub finishHandler {
 sub initCore {
 
   unless ($sharedCore) {
-    eval 'use Foswiki::Plugins::EditChapterPlugin::Core;';
-    die $@ if $@;
-
+    require Foswiki::Plugins::EditChapterPlugin::Core;
     $sharedCore = new Foswiki::Plugins::EditChapterPlugin::Core(@_);
   }
 
