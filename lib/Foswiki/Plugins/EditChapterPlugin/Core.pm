@@ -76,13 +76,12 @@ sub handleEnableEditChapter {
   return '';
 }
 
-
-
 ###############################################################################
 sub commonTagsHandler {
   my $this = shift;
   ### my ( $text, $topic, $web, $include, $meta ) = @_;
 
+  my $text = $_[0];
   my $topic = $_[1];
   my $web = $_[2];
 
@@ -93,7 +92,12 @@ sub commonTagsHandler {
 
   #writeDebug("called commonTagsHandler($web, $topic)");
 
-  $_[0] =~ s/%(EN|DIS)ABLEEDITCHAPTER%/
+  my $blocks = {};
+  my $renderer = $Foswiki::Plugins::SESSION->renderer;
+  $text = $renderer->takeOutBlocks($text, 'verbatim', $blocks);
+  $text = $renderer->takeOutBlocks( $text, 'pre', $blocks);
+
+  $text =~ s/%(EN|DIS)ABLEEDITCHAPTER%/
     $this->handleEnableEditChapter($web, $topic, $1)
   /ge;
 
@@ -111,13 +115,18 @@ sub commonTagsHandler {
 
   #writeDebug("enabled=$enabled");
 
+
   # loop over all lines
   my $chapterNumber = 0;
-  $_[0] =~ s/(^)(---+[\+#]{$this->{minDepth},$this->{maxDepth}}[0-9]*(?:!!)?)([^$this->{translationToken}\+#!].+?)($)/
+  $text =~ s/(^)(---+[\+#]{$this->{minDepth},$this->{maxDepth}}[0-9]*(?:!!)?)([^$this->{translationToken}\+#!].+?)($)/
     $1.
     $this->handleSection($web, $topic, \$chapterNumber, $3, $2, $4, $enabled)
   /gme;
 
+  $renderer->putBackBlocks( \$text, $blocks, 'pre' );
+  $renderer->putBackBlocks( \$text, $blocks, 'verbatim' );
+
+  $_[0] = $text;
 }
 
 ###############################################################################

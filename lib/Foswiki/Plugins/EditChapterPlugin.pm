@@ -21,27 +21,24 @@ use Foswiki::Func;
 
 use vars qw( 
   $VERSION $RELEASE $SHORTDESCRIPTION $NO_PREFS_IN_TOPIC
-  $sharedCore $baseWeb $baseTopic $enabled $header $doneHeader
+  $sharedCore $baseWeb $baseTopic $enabled 
 );
 
 $VERSION = '$Rev$';
-$RELEASE = '2.02';
+$RELEASE = '2.03';
 $SHORTDESCRIPTION = 'An easy sectional edit facility';
-
-$header = <<'HERE';
-<link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
-<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
-HERE
-
 
 ###############################################################################
 sub initPlugin {
   ($baseTopic, $baseWeb) = @_;
 
   $sharedCore = undef;
-  $doneHeader = 0;
 
   Foswiki::Func::registerTagHandler('EXTRACTCHAPTER', \&EXTRACTCHAPTER);
+  Foswiki::Func::addToHEAD('EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI');
+<link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
+<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
+HERE
 
   return 1;
 }
@@ -66,13 +63,13 @@ sub initCore {
 sub commonTagsHandler {
   ### my ( $text, $topic, $web, $meta ) = @_;
 
-  unless ($doneHeader) {
-    $doneHeader = 1 if ($_[0] =~ s/<head>(.*?[\r\n]+)/<head>$1$header/o);
-  }
-
   my $context = Foswiki::Func::getContext();
   return unless $context->{'view'};
   return unless $context->{'authenticated'};
+
+  my $query = Foswiki::Func::getCgiQuery();
+  my $contenttype = $query->param('contenttype') || '';
+  return if $contenttype eq "application/pdf"; 
 
   my $core = initCore($baseWeb, $baseTopic);
   $core->commonTagsHandler(@_);
@@ -82,7 +79,9 @@ sub commonTagsHandler {
 sub postRenderingHandler {
   return unless $sharedCore;
   my $translationToken = $sharedCore->{translationToken};
-  $_[0] =~ s/$translationToken//go;
+  $_[0] =~ s/$translationToken//g;
+  $_[0] =~ s/(<a name=["'])A_01_/$1/g; # cleanup anchors
+  $_[0] =~ s/(<a href=["']#)A_01_/$1/g; 
 
 }
 

@@ -2,15 +2,15 @@
 %TMPL:INCLUDE{"editjavascript"}%<!-- editjavascript// -->
 %TMPL:DEF{"textarea"}%<!-- textarea -->
 <textarea id="beforetext" name="beforetext" style="display:none" >%EXTRACTCHAPTER{before="%URLPARAM{"from" default="0"}%" encode="on" id="2"}%</textarea>
-<textarea id="topic" name="paragraph" class="foswikiTextarea natedit" rows="%EDITBOXHEIGHT%" cols="%EDITBOXWIDTH%" style='%EDITBOXSTYLE%' wrap="virtual">%EXTRACTCHAPTER{from="%URLPARAM{"from" default="0"}%" to="%URLPARAM{"to"}%" encode="on" id="1"}%</textarea>
+<textarea id="topic" name="paragraph" class="foswikiTextarea DISfoswikiWysiwygEdit natEditTextArea natedit {autoMaxExpand:true, minHeight:215}" rows="%EDITBOXHEIGHT%" cols="%EDITBOXWIDTH%" style='%EDITBOXSTYLE%' wrap="virtual">%EXTRACTCHAPTER{from="%URLPARAM{"from" default="0"}%" to="%URLPARAM{"to"}%" encode="on" id="1"}%</textarea>
 <textarea id="aftertext"  name="aftertext" style="display:none">%EXTRACTCHAPTER{after="%URLPARAM{"to"}%" encode="on" id="3"}%</textarea>
 <textarea id="text" name="text" style="display:none" ></textarea>
 <input type="hidden" name="from" value="%URLPARAM{"from" default="0"}%" />
 <input type="hidden" name="to" value="%URLPARAM{"to"}%" />
 <script type="text/javascript">
 /* to hook into patternskin */
-$(function() {
-  $(".patternActionButtons input").click(function() {
+jQuery(function() {
+  jQuery(".patternActionButtons input").click(function() {
     beforeSubmitHandler();
   });
 });
