@@ -15,7 +15,8 @@
 
 package Foswiki::Plugins::EditChapterPlugin::Core;
 
-use Foswiki::Func;
+use Foswiki::Func ();
+use Foswiki::Plugins ();
 use strict;
 use constant DEBUG => 0; # toggle me
 
@@ -148,13 +149,14 @@ sub handleSection {
     my $from = $$chapterNumber;
     my $to = $$chapterNumber;
 
-    $from = 0 if $from == 1; # include chapter 0 in chapter 1
+    #$from = 0 if $from == 1; # include chapter 0 in chapter 1
 
     my %args = (
       from=>$from,
       to=>$to,
       t=>time(),
-      cover=>'chapter'
+      cover=>'chapter',
+      nowysiwyg=>'on',
     );
 
     my $anchor = lc($web.'_'.$topic);
@@ -169,8 +171,6 @@ sub handleSection {
       Foswiki::Func::getScriptUrl($this->{baseWeb}, $this->{baseTopic}, 'view').
       $queryString.
       "#$anchor";
-
-
 
     my $url = Foswiki::Func::getScriptUrl($web, $topic, 'edit', %args);
 

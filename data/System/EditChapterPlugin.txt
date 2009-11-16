@@ -119,6 +119,7 @@ Many thanks to the following sponsors for supporting this work:
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  16 Nov 2009: | disabling wysiwyg during sectional edits |
 |  02 Jul 2009: | fixing javascript order and TOC links |
 |  17 Apr 2009: | working towards a pure foswiki plugin |
 |  08 Jan 2009: | certified for foswiki/compat |

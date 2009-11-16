@@ -1,5 +1,11 @@
+.ecpHeading {
+  position:relative;
+  padding-right:16px;
+}
+.ecpHeading a {
+  display:inline !important;
+}
 .ecpEdit {
-  margin:0px 0px 0px 12px;
   padding:0px !important;
   border:0px !important;
   visibility:hidden;
@@ -10,9 +16,11 @@
   border:0px !important;
 }
 .ecpEdit img {
-  vertical-align:baseline;
   padding:0px;
   border:0px;
+  position:absolute;
+  right:0px;
+  bottom:0.25em;
 }
 /* some foswiki fixes */
 .foswikiToc .ecpHeading img {
