@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2009 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2010 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -95,8 +95,8 @@ sub commonTagsHandler {
 
   my $blocks = {};
   my $renderer = $Foswiki::Plugins::SESSION->renderer;
-  $text = $renderer->takeOutBlocks($text, 'verbatim', $blocks);
-  $text = $renderer->takeOutBlocks( $text, 'pre', $blocks);
+  $text = takeOutBlocks($text, 'verbatim', $blocks);
+  $text = takeOutBlocks( $text, 'pre', $blocks);
 
   $text =~ s/%(EN|DIS)ABLEEDITCHAPTER%/
     $this->handleEnableEditChapter($web, $topic, $1)
@@ -124,8 +124,8 @@ sub commonTagsHandler {
     $this->handleSection($web, $topic, \$chapterNumber, $3, $2, $4, $enabled)
   /gme;
 
-  $renderer->putBackBlocks( \$text, $blocks, 'pre' );
-  $renderer->putBackBlocks( \$text, $blocks, 'verbatim' );
+  putBackBlocks( \$text, $blocks, 'pre' );
+  putBackBlocks( \$text, $blocks, 'verbatim' );
 
   $_[0] = $text;
 }
@@ -291,6 +291,7 @@ sub handleEXTRACTCHAPTER {
   return $result;
 }
 
+###############################################################################
 sub entityEncode {
   my ( $text, $extra ) = @_;
   $extra ||= '';
@@ -299,6 +300,20 @@ sub entityEncode {
     s/([[\x01-\x09\x0b\x0c\x0e-\x1f"%&'*<=>@[_\|$extra])/'&#'.ord($1).';'/ge;
 
   return $text;
+}
+
+###############################################################################
+# compatibility wrapper 
+sub takeOutBlocks {
+  return Foswiki::takeOutBlocks(@_) if defined &Foswiki::takeOutBlocks;
+  return $Foswiki::Plugins::SESSION->{renderer}->takeOutBlocks(@_);
+}
+
+###############################################################################
+# compatibility wrapper 
+sub putBackBlocks {
+  return Foswiki::putBackBlocks(@_) if defined &Foswiki::putBackBlocks;
+  return $Foswiki::Plugins::SESSION->{renderer}->putBackBlocks(@_);
 }
 
 1;
