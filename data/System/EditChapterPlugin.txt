@@ -119,6 +119,7 @@ Many thanks to the following sponsors for supporting this work:
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  15 Feb 2010: | fixing breakage with latest Foswiki:Extensions/JQueryPlugin |
 |  12 Feb 2010: | minify and compress css and js; forward compatibility for newer foswikis |
 |  16 Nov 2009: | disabling wysiwyg during sectional edits |
 |  02 Jul 2009: | fixing javascript order and TOC links |
