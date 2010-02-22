@@ -67,6 +67,7 @@ sub commonTagsHandler {
 
   my $context = Foswiki::Func::getContext();
   return unless $context->{'view'};
+  return if $context->{'readonly'};
   return unless $context->{'authenticated'};
 
   my $query = Foswiki::Func::getCgiQuery();
