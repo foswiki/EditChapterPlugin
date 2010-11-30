@@ -15,27 +15,23 @@ function beforeSubmitHandler(script, action) {
   jQuery("#text").val(before.val()+chapterText+after.val());
 }
 
-(function($) {
 /* init gui */
-if (true) {
-  $(function() {
-    $('.ecpHeading').each(function(){
-      var $ecpEdit = $('.ecpEdit', this);
-      if ($ecpEdit.length) {
-        $(this).hover(
-          function(event) {
-            $(this).addClass('ecpHeadingHover');
-            $ecpEdit.css('visibility','visible');
-            event.stopPropagation();
-          },
-          function(event) {
-            $(this).removeClass('ecpHeadingHover');
-            $ecpEdit.css('visibility','hidden');
-            event.stopPropagation();
-          }
-        ); 
-      }
-    });
+jQuery(function($) {
+  $('.ecpHeading').each(function(){
+    var $ecpEdit = $('.ecpEdit', this);
+    if ($ecpEdit.length) {
+      $(this).hover(
+        function(event) {
+          $(this).addClass('ecpHeadingHover');
+          $ecpEdit.css('visibility','visible');
+          event.stopPropagation();
+        },
+        function(event) {
+          $(this).removeClass('ecpHeadingHover');
+          $ecpEdit.css('visibility','hidden');
+          event.stopPropagation();
+        }
+      ); 
+    }
   });
-}
-})(jQuery);
+});

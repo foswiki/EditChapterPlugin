@@ -16,7 +16,9 @@
   border:0px !important;
 }
 .ecpEdit img {
+  width:16px;
   padding:0px;
+  margin:0px;
   border:0px;
   position:absolute;
   right:0px;
