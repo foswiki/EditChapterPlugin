@@ -1,16 +1,8 @@
 .ecpHeading {
   position:relative;
-  padding-right:16px;
+  padding-right:1.1111em;
 }
-.ecpHeading a {
-  display:inline !important;
-}
-.ecpEdit {
-  padding:0px !important;
-  border:0px !important;
-  visibility:hidden;
-}
-.ecpEdit:hover {
+.ecpEditHover {
   background:transparent !important;
   padding:0px !important;
   border:0px !important;
@@ -20,23 +12,28 @@
   padding:0px;
   margin:0px;
   border:0px;
+}
+
+.ecpEdit {
+  visibility:hidden;
   position:absolute;
   right:0px;
   bottom:0.25em;
 }
-/* some foswiki fixes */
-.foswikiToc .ecpHeading img {
+.ecpHover .ecpEdit {
+  visibility:visible;
+  background-color:transparent;
+}
+.ecpDisabled {
+  padding:0px;
+}
+.ecpDisabled .ecpEdit,
+.ecpDisabled img {
   display:none;
 }
-.foswikiToc .ecpHeading {
-  display:inline;
-  padding-right:0px;
+#simplemodal-container {
+  width:600px;
 }
-/* debugging */
-.ecpChapter {
-  border:1px solid red;
-  padding:5px;
-}
-.ecpChapterHover {
-  border:1px solid blue;
+.jqSimpleModalDraggable {
+  cursor: move;
 }

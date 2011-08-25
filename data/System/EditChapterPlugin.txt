@@ -1,7 +1,4 @@
 ---+!! %TOPIC%
-<!--
-   * Set SHORTDESCRIPTION = An easy section editing facility
--->
 %SHORTDESCRIPTION%
 
 %TOC%
@@ -29,7 +26,6 @@ does not add an edit link to normal =&lt;h2>headings&lt;/h2>=.
 Sections might be included into the current topic using [[VarINCLUDE][INCLUDE]]. The
 edit link will be adjusted approriately, allowing to edit the correct target topic and
 then redirect back to the current topic it has been included to.
-
 
 ---++ Configuration
 There are a couple of preference variables to influence how and which headings are processed:
@@ -84,6 +80,38 @@ Example:
 See the =edit.chapter.tmpl= for a real-world example, used as a cover to the standard edit
 templates, thus hooking in section editing into the standard editing process.
 
+---+++ STARTCHAPTER/STOPCHAPTER
+A chapter normally starts with a heading and ends at the next heading. To further reduce
+the chunk that is made editable use the =%<nop>STARTCHAPTER%= and =%<nop>STOPCHAPTER%=
+marks within a chapter. That way you might exclude markup that is physically located
+between the two adjacent headings but should not be part of the edit session. 
+
+Example:
+
+<verbatim class="tml">
+<table class="foswikiTable">
+  <tr>
+    <td>
+---++ Cell 1
+some text
+%STOPCHAPTER%
+   </td>
+   <td>
+---++ Cell 2
+some other text
+%STOPCHAPTER%
+   </td>
+  </tr>
+</table>
+
+---++ Warning
+<div class="foswikiErrorMessage">
+%STARTCHAPTER%
+This is an error.
+%STOPCHAPTER%
+</div>
+</verbatim>
+
 
 ---++ Limitations
 For the purpose of simplicity a couple of shortcomings have to be accepted.
@@ -98,12 +126,6 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
      users can't specify any other section to be editable in isolation (e.g. using some
      =&lt;section> ... &lt;/section>= markup) other than by giving the respective section
      a heading.
-   1 jQuery: the <nop>EditChapterPlugin depends on the JQueryPlugin, used
-     to hook into the edit interface. You may be facing an increased javascript download overhead in 
-     your html pages as you are already using Foswiki:Extensions/BehavourContrib, Foswiki:Extensions/TwistyContrib
-     and Foswiki:Extensions/TwistyPlugin. Consider uninstalling these three and replace them with
-     Foswiki:Extensions/JQueryTwistyPlugin. You should have installed JQueryPlugin anyway already.
-     Last not least you get less javascript but more features.
 
 ---++ Installation Instructions
 %$INSTALL_INSTRUCTIONS%
@@ -113,12 +135,18 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
 Many thanks to the following sponsors for supporting this work:
    * [[http://www.tecdoc.de][TecDoc Informations System <nop>GmbH]]
 
+<!--
+   * Set SHORTDESCRIPTION = An easy section editing facility
+-->
 |  Plugin Author(s): | Michael Daum |
-|  Copyright &copy;: | 2008-2010, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2008-2011, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  25 Aug 2011: | added STARTCHAPTER, STOPCHAPTER; made modal dialog movable and resizable |
+|  06 Jun 2011: | using less obstrusive !JavaScript to add the edit behavior to headlines; \
+                  editing is now done in modal dialogs instead of jumping into a full-fledged editing screen |
 |  30 Nov 2010: | fixing compatibility with latest foswiki engine |
 |  15 Feb 2010: | fixing breakage with latest Foswiki:Extensions/JQueryPlugin |
 |  12 Feb 2010: | minify and compress css and js; forward compatibility for newer foswikis |
