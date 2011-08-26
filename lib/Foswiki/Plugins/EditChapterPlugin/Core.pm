@@ -110,7 +110,6 @@ sub commonTagsHandler {
   $text =~ s/%(EN|DIS)ABLEEDITCHAPTER%/
     $this->handleEnableEditChapter($web, $topic, $1)
   /ge;
-  $text =~ s/%(STOP|START)CHAPTER%/<!-- $1CHAPTER -->/g; # cleanup
 
   unless (defined $this->{enabled}{$key}) {
     my $access = 

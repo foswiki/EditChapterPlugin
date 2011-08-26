@@ -19,7 +19,7 @@
 %TMPL:DEF{"settingstab"}%%TMPL:END%
 %TMPL:DEF{"formfields"}%%TMPL:END%
 
-%TMPL:DEF{"dialog"}%<div class="foswikiDialog ecpDialog foswikiFormSteps jqSimpleModalResizable">
+%TMPL:DEF{"dialog"}%<div class="foswikiDialog ecpDialog foswikiFormSteps jqSimpleModalResizable {alsoResize:'textarea[name=chapter]'}">
   <form name="EditForm" action="%SCRIPTURLPATH{"save"}%/%WEB%/%TOPIC%" method="post" class="ecpForm">
   <input type="hidden" name="t=" value="%GMTIME{"$epoch"}%" />
   <input type="hidden" name="redirectto" value="%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%#%URLPARAM{"id"}%" />

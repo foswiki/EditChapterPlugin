@@ -144,6 +144,7 @@ Many thanks to the following sponsors for supporting this work:
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  26 Aug 2011: | fixed STARTCHAPTER, STOPCHAPTER not being cleaned up until logged in |
 |  25 Aug 2011: | added STARTCHAPTER, STOPCHAPTER; made modal dialog movable and resizable |
 |  06 Jun 2011: | using less obstrusive !JavaScript to add the edit behavior to headlines; \
                   editing is now done in modal dialogs instead of jumping into a full-fledged editing screen |
