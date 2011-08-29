@@ -42,8 +42,10 @@ jQuery(function($) {
     var $this = $(this),
         id = $this.parent().attr("id"),
         title = $this.parent().text(),
-        opts = $.extend({id:id, title:title}, $this.metadata()),
-        editUrl = foswiki.getPreference("SCRIPTURL") +
+        opts = $.extend({id:id, title:title}, $this.metadata());
+
+      function openEditDialog() {
+        var editUrl = foswiki.getPreference("SCRIPTURL") +
           "/rest/RenderPlugin/template" +
           "?name=edit.chapter;expand=dialog" +
           ";topic="+opts.web+"."+opts.topic + 
@@ -51,10 +53,26 @@ jQuery(function($) {
           ";to="+opts.to + 
           ";title="+opts.title +
           ";id="+id+
-          ";t="+(new Date).getTime(),
-        lockUrl = foswiki.getPreference("SCRIPTURL") +
-          "/jsonrpc/EditChapterPlugin/lock" +
-          ";topic="+opts.web+"."+opts.topic;
+          ";t="+(new Date).getTime();
+
+        loadDialog(editUrl, function(data) {
+          foswiki.openDialog(data, {
+            persist:false,
+            containerCss: { 
+              width:640
+            },
+            onCancel: function(dialog) {
+              $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+                namespace: "EditChapterPlugin",
+                method: "unlock",
+                params: {
+                  "topic": opts.web+"."+opts.topic
+                }
+              });
+            }
+          }); 
+        });
+      }
 
       $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
         namespace: 'EditChapterPlugin',
@@ -62,28 +80,8 @@ jQuery(function($) {
         params: {
           "topic": opts.web+"."+opts.topic
         },
-        success: function(json, textStatus, xhr) {
-          //console.log("success: json=",json);
-          loadDialog(editUrl, function(data) {
-            foswiki.openDialog(data, {
-              persist:false,
-              containerCss: { 
-                width:640
-              },
-              onCancel: function(dialog) {
-                $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
-                  namespace: "EditChapterPlugin",
-                  method: "unlock",
-                  params: {
-                    "topic": opts.web+"."+opts.topic
-                  }
-                });
-              }
-            }); 
-          });
-        },
+        success: openEditDialog,
         error: function(json, textStatus, xhr) {
-          //console.log("error: json=",json);
           alert(json.error.message);
         }
       });

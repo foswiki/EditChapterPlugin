@@ -105,9 +105,13 @@ sub jsonRpcLockTopic {
   my $currentWikiName = Foswiki::Func::getWikiName();
 
   # TODO: localize
-  throw Foswiki::Contrib::JsonRpcContrib::Error(423, 
-    "Topic is locked by $wikiName for another ".int($unlockTime)." minutes. Please try again later.")
-    if $loginName && $wikiName ne $currentWikiName;
+  if ($loginName && $wikiName ne $currentWikiName) {
+    my $time = int($unlockTime);
+    if ($time > 0) {
+      throw Foswiki::Contrib::JsonRpcContrib::Error(423, 
+        "Topic is locked by $wikiName for another $time minute(s). Please try again later.");
+    }
+  }
 
   Foswiki::Func::setTopicEditLock($web, $topic, 1);
 
