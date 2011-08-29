@@ -18,6 +18,8 @@ package Foswiki::Plugins::EditChapterPlugin::Core;
 use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Foswiki::Plugins::JQueryPlugin ();
+use Foswiki::Contrib::JsonRpcContrib::Error ();
+use Error qw(:try);
 use strict;
 use constant DEBUG => 0; # toggle me
 
@@ -40,7 +42,10 @@ sub new {
     '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" border="0" />';
   my $editLabelFormat = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
-    '<span id="$id" class="ecpHeading"> $heading <a href="#" class="ecpEdit jqSimpleModal {url:\'%SCRIPTURL{"rest"}%/RenderPlugin/template?name=edit.chapter;expand=dialog;topic=$web.$topic;from=$from;to=$to;title=%ENCODE{"$title" type="url"}%;id=$id\'}">$img</a></span>';
+    '<span id="$id" class="ecpHeading"> $heading <a href="#" class="ecpEdit {web:\'$web\', topic:\'$topic\', from:\'$from\', to:\'$to\'}">$img</a></span>';
+
+#    '<span id="$id" class="ecpHeading"> $heading <a href="#" class="ecpEdit jqSimpleModal {url:\'%SCRIPTURL{"rest"}%/RenderPlugin/template?name=edit.chapter;expand=dialog;topic=$web.$topic;from=$from;to=$to;title=%ENCODE{"$title" type="url"}%;id=$id\'}">$img</a></span>';
+
   my $wikiName = Foswiki::Func::getWikiName();
 
   my $this = {
@@ -72,6 +77,7 @@ HERE
   Foswiki::Plugins::JQueryPlugin::createPlugin("simplemodal");
   Foswiki::Plugins::JQueryPlugin::createPlugin("button");
   Foswiki::Plugins::JQueryPlugin::createPlugin("ui");
+  Foswiki::Plugins::JQueryPlugin::createPlugin("jsonrpc");
 
   return bless($this, $class);
 }
@@ -85,6 +91,50 @@ sub handleEnableEditChapter {
   #writeDebug("called handleEnableEditChapter($web, $topic, $flag)");
 
   return '';
+}
+
+###############################################################################
+sub jsonRpcLockTopic {
+  my ($this, $request) = @_;
+
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
+  my (undef, $loginName, $unlockTime) = Foswiki::Func::checkTopicEditLock($web, $topic);
+
+  my $wikiName = Foswiki::Func::getWikiName($loginName);
+  my $currentWikiName = Foswiki::Func::getWikiName();
+
+  # TODO: localize
+  throw Foswiki::Contrib::JsonRpcContrib::Error(423, 
+    "Topic is locked by $wikiName for another ".int($unlockTime)." minutes. Please try again later.")
+    if $loginName && $wikiName ne $currentWikiName;
+
+  Foswiki::Func::setTopicEditLock($web, $topic, 1);
+
+  return 'ok';
+}
+
+###############################################################################
+sub jsonRpcUnlockTopic {
+  my ($this, $request) = @_;
+
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
+  my (undef, $loginName, $unlockTime) = Foswiki::Func::checkTopicEditLock($web, $topic);
+
+  return 'ok' unless $loginName; # nothing to unlock
+
+  my $wikiName = Foswiki::Func::getWikiName($loginName);
+  my $currentWikiName = Foswiki::Func::getWikiName();
+
+  if ($wikiName ne $currentWikiName) {
+    throw Foswiki::Contrib::JsonRpcContrib::Error(500, "Can't clear lease of user $wikiName")
+      if $request->param("warn") ne 'off';
+  } else {
+    Foswiki::Func::setTopicEditLock($web, $topic, 0);
+  }
+
+  return 'ok';
 }
 
 ###############################################################################

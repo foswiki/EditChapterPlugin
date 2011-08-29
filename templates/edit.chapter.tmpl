@@ -19,14 +19,14 @@
 %TMPL:DEF{"settingstab"}%%TMPL:END%
 %TMPL:DEF{"formfields"}%%TMPL:END%
 
-%TMPL:DEF{"dialog"}%<div class="foswikiDialog ecpDialog foswikiFormSteps jqSimpleModalResizable {alsoResize:'textarea[name=chapter]'}">
+%TMPL:DEF{"dialog"}%<div id="ecpDialog" class="foswikiDialog ecpDialog foswikiFormSteps jqSimpleModalResizable {alsoResize:'textarea[name=chapter]'}">
   <form name="EditForm" action="%SCRIPTURLPATH{"save"}%/%WEB%/%TOPIC%" method="post" class="ecpForm">
   <input type="hidden" name="t=" value="%GMTIME{"$epoch"}%" />
   <input type="hidden" name="redirectto" value="%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%#%URLPARAM{"id"}%" />
   <h2 class="foswikiDialogTitle jqSimpleModalDraggable">%MAKETEXT{"Edit chapter '[_1]'" args="%URLPARAM{"title" default="%URLPARAM{"from"}%"}%"}%</h2>
   <div class="foswikiFormStep">
     <textarea name="beforetext" style="display:none" >%EXTRACTCHAPTER{before="%URLPARAM{"from" default="0"}%" encode="on"}%</textarea>
-    <textarea name="chapter" class="jqFocus foswikiTextarea natEditTextArea natedit {showObjectTools:false}" rows="%EDITBOXHEIGHT%" cols="%EDITBOXWIDTH%" wrap="virtual">%EXTRACTCHAPTER{from="%URLPARAM{"from" default="0"}%" to="%URLPARAM{"to"}%" encode="on"}%</textarea>
+    <textarea name="chapter" class="jqFocus foswikiTextarea natEditTextArea natedit" rows="%EDITBOXHEIGHT%" cols="%EDITBOXWIDTH%" wrap="virtual">%EXTRACTCHAPTER{from="%URLPARAM{"from" default="0"}%" to="%URLPARAM{"to"}%" encode="on"}%</textarea>
     <textarea name="aftertext" style="display:none">%EXTRACTCHAPTER{after="%URLPARAM{"to"}%" encode="on"}%</textarea>
     <textarea name="text" style="display:none" >%EXTRACTCHAPTER%</textarea>
     <input type="hidden" name="from" value="%URLPARAM{"from" default="0"}%" />

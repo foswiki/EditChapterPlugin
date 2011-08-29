@@ -19,10 +19,11 @@ use strict;
 
 use Foswiki::Func();
 use Foswiki::Plugins();
-    use Foswiki::Plugins::EditChapterPlugin::Core;
+use Foswiki::Plugins::EditChapterPlugin::Core();
+use Foswiki::Contrib::JsonRpcContrib ();
 
 our $VERSION = '$Rev$';
-our $RELEASE = '4.02';
+our $RELEASE = '4.10';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'An easy sectional edit facility';
 our $core;
@@ -31,8 +32,17 @@ our $core;
 sub initPlugin {
   $core = undef;
 
+
   Foswiki::Func::registerTagHandler('EXTRACTCHAPTER', sub {
     return getCore(shift)->handleEXTRACTCHAPTER(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("EditChapterPlugin", "lock", sub {
+    return getCore(shift)->jsonRpcLockTopic(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("EditChapterPlugin", "unlock", sub {
+    return getCore(shift)->jsonRpcUnlockTopic(@_);
   });
 
   return 1;

@@ -144,7 +144,8 @@ Many thanks to the following sponsors for supporting this work:
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
-|  29 Aug 2011: | added missing dependency on jquery-ui to make simplemodals resizable/draggable |
+|  29 Aug 2011: | added missing dependency on jquery-ui to make simplemodals resizable/draggable;\
+                  locking a topic properly in edit chapter mode |
 |  26 Aug 2011: | fixed STARTCHAPTER, STOPCHAPTER not being cleaned up until logged in |
 |  25 Aug 2011: | added STARTCHAPTER, STOPCHAPTER; made modal dialog movable and resizable |
 |  06 Jun 2011: | using less obstrusive !JavaScript to add the edit behavior to headlines; \

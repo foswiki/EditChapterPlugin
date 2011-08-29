@@ -1,23 +1,110 @@
 /* init gui */
 jQuery(function($) {
+
+  function loadDialog(url, onsuccess) {
+    $.ajax({
+      url: url,
+      dataType: 'html',
+      async: false,
+      success: function(data) {
+        $("body").append(data);
+        if (typeof(onsuccess) === 'function') {
+          onsuccess.call(this, data);
+        }
+      }
+    });
+  }
+
+  function saveGeometry($elem) {
+    $elem.data("geometry", {
+      top: $elem.css("top"),
+      right: $elem.css("right"),
+      bottom: $elem.css("bottom"),
+      left: $elem.css("left"),
+      width: $elem.css("width"),
+      height: $elem.css("height")
+    });
+  }
+
+  function restoreGeometry($elem) {
+    var geometry = $elem.data("geometry");
+    $elem.css({
+      top:geometry.top,
+      right:geometry.right,
+      bottom:geometry.bottom,
+      left:geometry.left,
+      width:geometry.width,
+      height:geometry.height
+    });
+  }
+
+  $(".ecpEdit").live("click", function() {
+    var $this = $(this),
+        id = $this.parent().attr("id"),
+        title = $this.parent().text(),
+        opts = $.extend({id:id, title:title}, $this.metadata()),
+        editUrl = foswiki.getPreference("SCRIPTURL") +
+          "/rest/RenderPlugin/template" +
+          "?name=edit.chapter;expand=dialog" +
+          ";topic="+opts.web+"."+opts.topic + 
+          ";from="+opts.from + 
+          ";to="+opts.to + 
+          ";title="+opts.title +
+          ";id="+id+
+          ";t="+(new Date).getTime(),
+        lockUrl = foswiki.getPreference("SCRIPTURL") +
+          "/jsonrpc/EditChapterPlugin/lock" +
+          ";topic="+opts.web+"."+opts.topic;
+
+      $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+        namespace: 'EditChapterPlugin',
+        method: 'lock',
+        params: {
+          "topic": opts.web+"."+opts.topic
+        },
+        success: function(json, textStatus, xhr) {
+          //console.log("success: json=",json);
+          loadDialog(editUrl, function(data) {
+            foswiki.openDialog(data, {
+              persist:false,
+              containerCss: { 
+                width:640
+              },
+              onCancel: function(dialog) {
+                $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+                  namespace: "EditChapterPlugin",
+                  method: "unlock",
+                  params: {
+                    "topic": opts.web+"."+opts.topic
+                  }
+                });
+              }
+            }); 
+          });
+        },
+        error: function(json, textStatus, xhr) {
+          //console.log("error: json=",json);
+          alert(json.error.message);
+        }
+      });
+
+
+      return false;
+  });
+
+  // init edit form
   $(".ecpForm:not(.ecpInitedForm)").livequery(function() {
     var $this = $(this);
 
     // switch to fullscree
     $this.find(".ecpFullScreen").change(function() {
       var $fullScreen = $(this),
-          $container = $fullScreen.parents(".simplemodal-container:first");
+          $container = $fullScreen.parents(".simplemodal-container:first"),
+          $textarea = $container.find("textarea");
 
       if ($fullScreen.is(":checked")) {
-        // TODO: save current geometry
-        $container.data("geometry", {
-          top: $container.css("top"),
-          right: $container.css("right"),
-          bottom: $container.css("bottom"),
-          left: $container.css("left"),
-          width: $container.css("width"),
-          height: $container.css("height")
-        });
+        saveGeometry($container);
+        saveGeometry($textarea);
         $container.css({
           top:0,
           right:0,
@@ -26,19 +113,20 @@ jQuery(function($) {
           width:'auto',
           height:'100%'
         });
-        //$container.trigger("resize");
-      } else {
-        var geometry = $container.data("geometry");
-        console.log("geomentry=",geometry);
-        $container.css({
-          top:geometry.top,
-          right:geometry.right,
-          bottom:geometry.bottom,
-          left:geometry.left,
-          width:geometry.width,
-          height:geometry.height
+        $textarea.css({
+          height:$container.height() - 180,
+          width:'99%'
         });
-        $(window).trigger("resize");
+        $container.find(".ui-resizable-handle").hide();
+        $("body").children().not(".ecpDialog, .simplemodal-container").hide();
+      } else {
+        restoreGeometry($container);
+        $textarea.css({
+          height:'auto',
+          width:'99%'
+        });
+        $container.find(".ui-resizable-handle").show();
+        $("body").children().not(".ecpDialog, .simplemodal-container").show();
       }
     });
 
@@ -69,6 +157,7 @@ jQuery(function($) {
     });
   });
 
+  // init foswikiToc
   $(".foswikiToc .ecpHeading").addClass("ecpDisabled");
   if ($.browser.msie) {
     // hoverIntent fails on IE...wtf

@@ -1,3 +1,6 @@
+.ecpDialog {
+  display:none;
+}
 .ecpHeading {
   position:relative;
   padding-right:1.1111em;
