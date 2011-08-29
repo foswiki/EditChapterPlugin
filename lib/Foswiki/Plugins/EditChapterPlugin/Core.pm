@@ -71,6 +71,7 @@ HERE
   Foswiki::Plugins::JQueryPlugin::createPlugin("hoverintent");
   Foswiki::Plugins::JQueryPlugin::createPlugin("simplemodal");
   Foswiki::Plugins::JQueryPlugin::createPlugin("button");
+  Foswiki::Plugins::JQueryPlugin::createPlugin("ui");
 
   return bless($this, $class);
 }

@@ -22,7 +22,7 @@ use Foswiki::Plugins();
     use Foswiki::Plugins::EditChapterPlugin::Core;
 
 our $VERSION = '$Rev$';
-our $RELEASE = '4.01';
+our $RELEASE = '4.02';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'An easy sectional edit facility';
 our $core;
