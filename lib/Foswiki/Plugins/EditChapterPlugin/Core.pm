@@ -75,9 +75,8 @@ HERE
 <script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
 HERE
   Foswiki::Plugins::JQueryPlugin::createPlugin("hoverintent");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("simplemodal");
   Foswiki::Plugins::JQueryPlugin::createPlugin("button");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("ui");
+  Foswiki::Plugins::JQueryPlugin::createPlugin("ui::dialog");
   Foswiki::Plugins::JQueryPlugin::createPlugin("jsonrpc");
   Foswiki::Plugins::JQueryPlugin::createPlugin("natedit");
 
