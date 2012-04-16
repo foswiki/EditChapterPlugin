@@ -57,7 +57,7 @@ sub new {
     session => $session,
     baseWeb => $session->{webName},
     baseTopic => $session->{topicName},
-    translationToken => "\1",
+    translationToken => "<span class='tok'></span>",
     wikiName => $wikiName,
     @_,
   };
@@ -79,6 +79,7 @@ HERE
   Foswiki::Plugins::JQueryPlugin::createPlugin("button");
   Foswiki::Plugins::JQueryPlugin::createPlugin("ui");
   Foswiki::Plugins::JQueryPlugin::createPlugin("jsonrpc");
+  Foswiki::Plugins::JQueryPlugin::createPlugin("natedit");
 
   return bless($this, $class);
 }
@@ -186,7 +187,7 @@ sub commonTagsHandler {
 
   # loop over all lines
   my $chapterNumber = 0;
-  $text =~ s/(^)(---+[\+#]{$this->{minDepth},$this->{maxDepth}}[0-9]*(?:!!)?)([^$this->{translationToken}\+#!].+?)($)/
+  $text =~ s/(^)(---+[\+#]{$this->{minDepth},$this->{maxDepth}}[0-9]*(?:!!)?)(?!$this->{translationToken})([^\+#!].+?)($)/
     $1.
     $this->handleSection($web, $topic, \$chapterNumber, $3, $2, $4, $enabled)
   /gme;
@@ -376,7 +377,7 @@ sub handleEXTRACTCHAPTER {
     }
 
     # track STOPCHAPTER
-    if ($line =~ /^%STOPCHAPTER%$/m) {
+    if ($line =~ /^%(STOP|END)CHAPTER%$/m) {
       if ($insideChapter) {
         # adjust toPos and bail out
         if ($extractionMode == 1) { # normal mode
