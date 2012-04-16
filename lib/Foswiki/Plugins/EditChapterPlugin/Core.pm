@@ -74,11 +74,19 @@ HERE
   Foswiki::Func::addToZone('script', 'EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::HOVERINTENT');
 <script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
 HERE
+
+  if ($Foswiki::cfg{Validation}{Method} eq 'strikeone') {
+    # make sure strikeone.js is loaded even though there isn't a form on the page yet.
+    Foswiki::Func::addToZone( 'script', 'JavascriptFiles/strikeone', <<JS );
+<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/JavascriptFiles/strikeone.js"></script>
+JS
+  }
+
   Foswiki::Plugins::JQueryPlugin::createPlugin("hoverintent");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("button");
   Foswiki::Plugins::JQueryPlugin::createPlugin("ui::dialog");
   Foswiki::Plugins::JQueryPlugin::createPlugin("jsonrpc");
   Foswiki::Plugins::JQueryPlugin::createPlugin("natedit");
+
 
   return bless($this, $class);
 }
