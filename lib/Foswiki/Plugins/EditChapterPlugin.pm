@@ -19,62 +19,73 @@ use strict;
 
 use Foswiki::Func();
 use Foswiki::Plugins();
-use Foswiki::Plugins::JQueryPlugin ();
+use Foswiki::Plugins::JQueryPlugin   ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '$Rev$';
-our $RELEASE = '4.31';
+our $VERSION           = '$Rev$';
+our $RELEASE           = '4.31';
 our $NO_PREFS_IN_TOPIC = 1;
-our $SHORTDESCRIPTION = 'An easy sectional edit facility';
+our $SHORTDESCRIPTION  = 'An easy sectional edit facility';
 our $core;
 
 ###############################################################################
 sub initPlugin {
-  $core = undef;
+    $core = undef;
 
-  Foswiki::Func::registerTagHandler('EXTRACTCHAPTER', sub {
-    return getCore(shift)->handleEXTRACTCHAPTER(@_);
-  });
+    Foswiki::Func::registerTagHandler(
+        'EXTRACTCHAPTER',
+        sub {
+            return getCore(shift)->handleEXTRACTCHAPTER(@_);
+        }
+    );
 
-  Foswiki::Contrib::JsonRpcContrib::registerMethod("EditChapterPlugin", "lock", sub {
-    return getCore(shift)->jsonRpcLockTopic(@_);
-  });
+    Foswiki::Contrib::JsonRpcContrib::registerMethod(
+        "EditChapterPlugin",
+        "lock",
+        sub {
+            return getCore(shift)->jsonRpcLockTopic(@_);
+        }
+    );
 
-  Foswiki::Contrib::JsonRpcContrib::registerMethod("EditChapterPlugin", "unlock", sub {
-    return getCore(shift)->jsonRpcUnlockTopic(@_);
-  });
+    Foswiki::Contrib::JsonRpcContrib::registerMethod(
+        "EditChapterPlugin",
+        "unlock",
+        sub {
+            return getCore(shift)->jsonRpcUnlockTopic(@_);
+        }
+    );
 
-  return 1;
+    return 1;
 }
 
 ###############################################################################
 sub getCore {
-  my $session = shift || $Foswiki::Plugins::SESSION;
+    my $session = shift || $Foswiki::Plugins::SESSION;
 
-  unless ($core) {
-    require Foswiki::Plugins::EditChapterPlugin::Core;
-    $core = new Foswiki::Plugins::EditChapterPlugin::Core($session);
-  }
+    unless ($core) {
+        require Foswiki::Plugins::EditChapterPlugin::Core;
+        $core = new Foswiki::Plugins::EditChapterPlugin::Core($session);
+    }
 
-  return $core;
+    return $core;
 }
 
 ###############################################################################
 sub commonTagsHandler {
-  ### my ( $text, $topic, $web, $meta ) = @_;
+    ### my ( $text, $topic, $web, $meta ) = @_;
 
-  $_[0] =~ s/%(STOP|START)CHAPTER%/<!-- $1CHAPTER -->/g; # cleanup
+    $_[0] =~ s/%(STOP|START)CHAPTER%/<!-- $1CHAPTER -->/g;    # cleanup
 
-  my $context = Foswiki::Func::getContext();
-  return unless $context->{'view'};
-  return if $context->{'static'};
-  return unless $context->{'authenticated'};
+    my $context = Foswiki::Func::getContext();
+    return unless $context->{'view'};
+    return if $context->{'static'};
+    return unless $context->{'authenticated'};
 
-  my $query = Foswiki::Func::getCgiQuery();
-  my $contenttype = $query->param('contenttype') || '';
-  return if $contenttype eq "application/pdf"; 
+    my $query = Foswiki::Func::getCgiQuery();
+    my $contenttype = $query->param('contenttype') || '';
+    return if $contenttype eq "application/pdf";
 
-  getCore()->commonTagsHandler(@_);
+    getCore()->commonTagsHandler(@_);
 }
 
 1;
