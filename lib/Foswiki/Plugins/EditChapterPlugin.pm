@@ -23,7 +23,7 @@ use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
 our $VERSION = '$Rev$';
-our $RELEASE = '4.31';
+our $RELEASE = '4.32';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'An easy sectional edit facility';
 our $core;

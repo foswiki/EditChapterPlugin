@@ -42,7 +42,7 @@ sub new {
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_MAXDEPTH") || 6;
   my $editImg = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITIMG") || 
-    '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" border="0" />';
+    '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" />';
   my $editLabelFormat = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
     '<span id="$id" class="ecpHeading"> $heading <a href="$url" class="ecpEdit {web:\'$web\', topic:\'$topic\'}">$img</a></span>';
@@ -107,7 +107,9 @@ sub jsonRpcLockTopic {
   my ($this, $request) = @_;
 
   my $web = $this->{baseWeb};
-  my $topic = $this->{baseTopic};
+  my $topic = $request->param('topic') || $this->{baseTopic};
+  ($web, $topic) = Foswiki::Func::normalizeWebTopicName($web, $topic);
+
   my (undef, $loginName, $unlockTime) = Foswiki::Func::checkTopicEditLock($web, $topic);
 
   my $wikiName = Foswiki::Func::getWikiName($loginName);
@@ -132,7 +134,9 @@ sub jsonRpcUnlockTopic {
   my ($this, $request) = @_;
 
   my $web = $this->{baseWeb};
-  my $topic = $this->{baseTopic};
+  my $topic = $request->param('topic');
+  ($web, $topic) = Foswiki::Func::normalizeWebTopicName($web, $topic);
+
   my (undef, $loginName, $unlockTime) = Foswiki::Func::checkTopicEditLock($web, $topic);
 
   return 'ok' unless $loginName; # nothing to unlock
@@ -246,17 +250,7 @@ sub handleSection {
       t => time(),
     );
 
-    my $query = Foswiki::Func::getCgiQuery();
-    my $queryString = $query->query_string();
-    $queryString = $queryString?"?$queryString":"";
-
-    $args{redirectto} = 
-      Foswiki::Func::getScriptUrl($this->{baseWeb}, $this->{baseTopic}, 'view').
-      $queryString.
-      "#$id";
-
     my $url = Foswiki::Func::getScriptUrl('RenderPlugin', 'template', 'rest', %args);
-
     my $anchor = '<a name="'.$id.'"></a>';
 
     # format
