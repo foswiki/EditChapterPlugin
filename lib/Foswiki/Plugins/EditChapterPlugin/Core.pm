@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2012 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2013 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -110,6 +110,9 @@ sub jsonRpcLockTopic {
   my $topic = $request->param('topic') || $this->{baseTopic};
   ($web, $topic) = Foswiki::Func::normalizeWebTopicName($web, $topic);
 
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied") 
+    unless Foswiki::Func::checkAccessPermission('change', $this->{wikiName}, undef, $topic, $web);
+
   my (undef, $loginName, $unlockTime) = Foswiki::Func::checkTopicEditLock($web, $topic);
 
   my $wikiName = Foswiki::Func::getWikiName($loginName);
@@ -172,6 +175,7 @@ sub commonTagsHandler {
 
   my $blocks = {};
   my $renderer = $Foswiki::Plugins::SESSION->renderer;
+  $text = takeOutBlocks($text, 'textarea', $blocks);
   $text = takeOutBlocks($text, 'verbatim', $blocks);
   $text = takeOutBlocks( $text, 'pre', $blocks);
 
@@ -181,7 +185,7 @@ sub commonTagsHandler {
 
   unless (defined $this->{enabled}{$key}) {
     my $access = 
-      Foswiki::Func::checkAccessPermission('edit', $this->{wikiName}, undef, $topic, $web, undef);
+      Foswiki::Func::checkAccessPermission('change', $this->{wikiName}, undef, $topic, $web, undef);
 
     # disable edit if we have no access
     $this->{enabled}{$key} = 0 unless $access;
@@ -205,6 +209,7 @@ sub commonTagsHandler {
 
   putBackBlocks( \$text, $blocks, 'pre' );
   putBackBlocks( \$text, $blocks, 'verbatim' );
+  putBackBlocks( \$text, $blocks, 'textarea' );
 
   $_[0] = $text;
 }
@@ -250,7 +255,7 @@ sub handleSection {
       t => time(),
     );
 
-    my $url = Foswiki::Func::getScriptUrl('RenderPlugin', 'template', 'rest', %args);
+    my $url = Foswiki::Func::getScriptUrlPath('RenderPlugin', 'template', 'rest', %args);
     my $anchor = '<a name="'.$id.'"></a>';
 
     # format

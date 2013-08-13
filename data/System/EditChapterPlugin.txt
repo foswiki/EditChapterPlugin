@@ -1,16 +1,9 @@
+%META:TOPICINFO{author="BaseUserMapping_999" comment="autosave" date="1356278770" format="1.1" version="1"}%
 ---+!! %TOPIC%
 %SHORTDESCRIPTION%
 
 %TOC%
 ---++ Description
-<table style="float:right">
-<tr>
-  <td><img src="%ATTACHURLPATH%/wikiringlogo40x40.png"></td>
-  <td><a href="http://wikiring.com" title="Make your Wiki ring!" style="text-decoration:none">
-      Powered by <br /> <nop>WikiRing Consultants </a>
-  </td>
-</tr>
-</table>
 This plugin implements a simple section editing feature comparable to
 the one available for [[http://en.wikipedia.org/wiki/Help:Section#Section_editing][MediaWiki]].
 It adds link urls to headings so that users can edit the section below. Edit links are
@@ -139,11 +132,12 @@ Many thanks to the following sponsors for supporting this work:
    * Set SHORTDESCRIPTION = An easy section editing facility
 -->
 |  Plugin Author(s): | Michael Daum |
-|  Copyright &copy;: | 2008-2012, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2008-2013, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  13 Aug 2013: | check access rights before locking a topic; removed check for <nop>oldIEs |
 |  01 Oct 2012: | fixed construction of edit urls |
 |  16 Apr 2012: | fixed strange TOC links; adding missing dependency on Foswiki:Extensions/NatEditPlugin; \
                   properly encoding hidden text fragments while editing a chapter; \
@@ -176,6 +170,3 @@ Many thanks to the following sponsors for supporting this work:
 |  Dependencies: | %$DEPENDENCIES% |
 |  Plugin Home: | Foswiki:Extensions/EditChapterPlugin |
 |  Support: | Foswiki:Support/EditChapterPlugin |
-
-
-%META:FILEATTACHMENT{name="wikiringlogo40x40.png" attr="h" autoattached="0" comment="" date="1198066989" path="wikiringlogo40x40.png" size="2571" version=""}%

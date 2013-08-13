@@ -13,7 +13,6 @@ pub/System/EditChapterPlugin/Makefile 0644
 pub/System/EditChapterPlugin/pencil.png 0644
 pub/System/EditChapterPlugin/ueb.png 0644
 pub/System/EditChapterPlugin/uweb-g.gif 0644
-pub/System/EditChapterPlugin/wikiringlogo40x40.png 0644
 templates/edit.chapter.tmpl 0644
 templates/editjavascript.chapter.tmpl 0644
 templates/edittoolbar.chapter.tmpl 0644

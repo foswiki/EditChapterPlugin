@@ -2,7 +2,7 @@
 jQuery(function($) {
 
   // init edit link
-  $(".ecpEdit").live("click", function() {
+  $(".ecpEdit").on("click", function() {
     var $this = $(this), 
         href = $this.attr("href"),
         opts = $.extend({}, $this.metadata());
@@ -79,29 +79,15 @@ jQuery(function($) {
 
   // init foswikiToc
   $(".foswikiToc .ecpHeading").addClass("ecpDisabled");
-  if ($.browser.msie) {
-    // hoverIntent fails on IE...wtf
-    $(".ecpHeading:not(.ecpDisabled)").hover(
-      function(event) {
-        $(this).addClass('ecpHover');
-        event.stopPropagation();
-      },
-      function(event) {
-        $(this).removeClass('ecpHover');
-        event.stopPropagation();
-      }
-    );
-  } else {
-    $(".ecpHeading:not(.ecpDisabled)").hoverIntent({
-      timeout: 500,
-      over: function(event) {
-        $(this).addClass('ecpHover');
-        event.stopPropagation();
-      },
-      out: function(event) {
-        $(this).removeClass('ecpHover');
-        event.stopPropagation();
-      }
-    });
-  }
+  $(".ecpHeading:not(.ecpDisabled)").hoverIntent({
+    timeout: 500,
+    over: function(event) {
+      $(this).addClass('ecpHover');
+      event.stopPropagation();
+    },
+    out: function(event) {
+      $(this).removeClass('ecpHover');
+      event.stopPropagation();
+    }
+  });
 });
