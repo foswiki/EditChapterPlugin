@@ -45,7 +45,7 @@ sub new {
     '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" />';
   my $editLabelFormat = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
-    '<span id="$id" class="ecpHeading"> $heading <a href="$url" class="ecpEdit {web:\'$web\', topic:\'$topic\'}">$img</a></span>';
+    '<span id="$id" class="ecpHeading"> $heading <a href="#" class="ecpEdit {web:\'$web\', topic:\'$topic\', from:$from, to:$to, title:\'$title\', id:\'$id\'}">$img</a></span>';
 
   my $wikiName = Foswiki::Func::getWikiName();
 
@@ -235,10 +235,7 @@ sub handleSection {
 
     #$from = 0 if $from == 1; # include chapter 0 in chapter 1
 
-    my $title = $heading;
-    $title =~ s/['"]//g;
-    $title =~ s/^\s+//;
-    $title =~ s/\s+$//;
+    my $title = plainify($heading, $web, $topic);
 
     my $id = lc($web.'_'.$topic);
     $id =~ s/\//_/go;
@@ -520,6 +517,23 @@ sub takeOutBlocks {
 sub putBackBlocks {
   return Foswiki::putBackBlocks(@_) if defined &Foswiki::putBackBlocks;
   return $Foswiki::Plugins::SESSION->{renderer}->putBackBlocks(@_);
+}
+
+###############################################################################
+sub plainify {
+  my ($text) = @_;
+
+  $text =~ s/<!--.*?-->//gs;          # remove all HTML comments
+  $text =~ s/\&[a-z]+;/ /g;           # remove entities
+  $text =~ s/\[\[([^\]]*\]\[)(.*?)\]\]/$2/g;
+  $text =~ s/<[^>]*>//g;              # remove all HTML tags
+  $text =~ s/[\[\]\*\|=_\&\<\>]/ /g;  # remove Wiki formatting chars
+  $text =~ s/^\-\-\-+\+*\s*\!*/ /gm;  # remove heading formatting and hbar
+  $text =~ s/^\s+//o;                  # remove leading whitespace
+  $text =~ s/\s+$//o;                  # remove trailing whitespace
+  $text =~ s/['"]//o;
+
+  return $text;
 }
 
 1;

@@ -16,7 +16,7 @@ provisions. Note, that it will only detect headings created using TML (topic mar
 writing =---++ heading= and the like. It is not sensitive to normal HTML-markup, so it
 does not add an edit link to normal =&lt;h2>headings&lt;/h2>=.
 
-Sections might be included into the current topic using [[VarINCLUDE][INCLUDE]]. The
+Sections might be included into the current topic using [[%SYSTEMWEB%.VarINCLUDE][INCLUDE]]. The
 edit link will be adjusted approriately, allowing to edit the correct target topic and
 then redirect back to the current topic it has been included to.
 
@@ -137,6 +137,7 @@ Many thanks to the following sponsors for supporting this work:
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  02 Sep 2013: | improved javscript click behavior editing chapters; fixed html markup displayed un-rendered in the modal dialog's title bar |
 |  13 Aug 2013: | check access rights before locking a topic; removed check for <nop>oldIEs |
 |  01 Oct 2012: | fixed construction of edit urls |
 |  16 Apr 2012: | fixed strange TOC links; adding missing dependency on Foswiki:Extensions/NatEditPlugin; \

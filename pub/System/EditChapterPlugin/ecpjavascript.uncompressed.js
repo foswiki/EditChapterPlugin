@@ -15,6 +15,17 @@ jQuery(function($) {
         "topic": opts.web+"."+opts.topic
       },
       success: function() {
+        if (typeof(href) === 'undefined' || href == '#' || href == '') {
+          href = foswiki.getPreference("SCRIPTURL")+"/rest/RenderPlugin/template?"
+            + "name=edit.chapter"
+            + "&expand=dialog"
+            + "&topic=" + opts.web + "." + opts.topic
+            + "&from=" + opts.from 
+            + "&to=" + opts.to 
+            + "&title=" + opts.title 
+            + "&id=" + opts.id 
+            + "&t=" + (new Date).getTime();
+        }
         $.get(href, function(content) { 
           var $content = $(content);
           $content.hide();
