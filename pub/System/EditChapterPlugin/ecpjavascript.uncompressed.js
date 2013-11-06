@@ -92,8 +92,7 @@ jQuery(function($) {
     });
   });
 
-  // init foswikiToc
-  $(".foswikiToc .ecpHeading").addClass("ecpDisabled");
+  // init 
   $(".ecpHeading:not(.ecpDisabled)").hoverIntent({
     timeout: 500,
     over: function(event) {

@@ -45,7 +45,7 @@ sub new {
     '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" />';
   my $editLabelFormat = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
-    '<noautolink><span id="$id" class="ecpHeading"> $heading <a href="#" class="ecpEdit" title="$title" data-web="$web" data-topic="$topic" data-from="$from" data-to="$to">$img</a></span><noautolink>';
+    '<span id="$id" class="ecpHeading"> $heading <noautolink><a href="#" class="ecpEdit" title="$title" data-web="$web" data-topic="$topic" data-from="$from" data-to="$to">$img</a></noautolink>';
 
   my $wikiName = Foswiki::Func::getWikiName();
 

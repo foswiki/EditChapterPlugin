@@ -36,3 +36,6 @@
   width:98%;
   margin:0px;
 } 
+.foswikiToc .ecpHeading img {
+  display:none;
+}
