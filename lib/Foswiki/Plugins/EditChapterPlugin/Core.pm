@@ -45,7 +45,7 @@ sub new {
     '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" />';
   my $editLabelFormat = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
-    '<span id="$id" class="ecpHeading"> $heading <a href="#" class="ecpEdit {web:\'$web\', topic:\'$topic\', from:$from, to:$to, title:\'$title\', id:\'$id\'}">$img</a></span>';
+    '<noautolink><span id="$id" class="ecpHeading"> $heading <a href="#" class="ecpEdit" title="$title" data-web="$web" data-topic="$topic" data-from="$from" data-to="$to">$img</a></span><noautolink>';
 
   my $wikiName = Foswiki::Func::getWikiName();
 
@@ -75,7 +75,7 @@ HERE
 <script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
 HERE
 
-  if ($Foswiki::cfg{Validation}{Method} eq 'strikeone') {
+  if ($Foswiki::cfg{Validation}{Method} ne 'none') {
     # make sure strikeone.js is loaded even though there isn't a form on the page yet.
     Foswiki::Func::addToZone( 'script', 'JavascriptFiles/strikeone', <<JS );
 <script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/JavascriptFiles/strikeone.js"></script>

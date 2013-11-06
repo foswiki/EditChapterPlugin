@@ -1,11 +1,15 @@
 /* init gui */
 jQuery(function($) {
+  'use strict';
 
   // init edit link
-  $(".ecpEdit").on("click", function() {
+  $(document).on("click", ".ecpEdit", function() {
     var $this = $(this), 
         href = $this.attr("href"),
-        opts = $.extend({}, $this.metadata());
+        opts = $.extend({
+          id: $this.parent().attr('id'),
+          title: $this.attr('title')
+        }, $this.data());
 
     // lock
     $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
@@ -16,15 +20,15 @@ jQuery(function($) {
       },
       success: function() {
         if (typeof(href) === 'undefined' || href == '#' || href == '') {
-          href = foswiki.getPreference("SCRIPTURL")+"/rest/RenderPlugin/template?"
-            + "name=edit.chapter"
-            + "&expand=dialog"
-            + "&topic=" + opts.web + "." + opts.topic
-            + "&from=" + opts.from 
-            + "&to=" + opts.to 
-            + "&title=" + opts.title 
-            + "&id=" + opts.id 
-            + "&t=" + (new Date).getTime();
+          href = foswiki.getPreference("SCRIPTURL")+"/rest/RenderPlugin/template?" +
+            "name=edit.chapter" +
+            "&expand=dialog" +
+            "&topic=" + opts.web + "." + opts.topic +
+            "&from=" + opts.from  +
+            "&to=" + opts.to  +
+            "&title=" + opts.title +
+            "&id=" + opts.id +
+            "&t=" + (new Date()).getTime();
         }
         $.get(href, function(content) { 
           var $content = $(content);
