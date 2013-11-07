@@ -97,11 +97,9 @@ jQuery(function($) {
     timeout: 500,
     over: function(event) {
       $(this).addClass('ecpHover');
-      event.stopPropagation();
     },
     out: function(event) {
       $(this).removeClass('ecpHover');
-      event.stopPropagation();
     }
   });
 });
