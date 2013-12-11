@@ -22,8 +22,8 @@ use Foswiki::Plugins();
 use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '4.62';
-our $RELEASE = '4.62';
+our $VERSION = '4.63';
+our $RELEASE = '4.63';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'An easy sectional edit facility';
 our $core;

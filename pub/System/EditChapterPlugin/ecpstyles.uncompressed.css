@@ -32,8 +32,8 @@
   display:none;
 }
 
-.ecpForm .natEditTextArea {
-  width:98%;
+.ecpForm textarea {
+  width:100%;
   margin:0px;
 } 
 .foswikiToc .ecpHeading img {

@@ -1,8 +1,8 @@
 %TMPL:INCLUDE{"edit"}%<!-- template: edit.chapter.tmpl -->
 %TMPL:INCLUDE{"editjavascript"}%
 
-%TMPL:DEF{"dialog::params"}%alsoResize:'textarea.foswikiTextarea', modal:true, draggable:true, resizable:true, width:800%TMPL:END%
-%TMPL:DEF{"dialog::params::animated"}%alsoResize:'textarea.foswikiTextarea', modal:true, draggable:true, resizable:true, width:800, show: {effect: 'drop', direction: 'up', duration:'fast'}, hide:{ effect: 'drop', direction: 'up', duration:'fast' }%TMPL:END%
+%TMPL:DEF{"dialog::params"}%alsoResize:'textarea.foswikiTextarea', modal:true, draggable:true, resizable:true, width:855%TMPL:END%
+%TMPL:DEF{"dialog::params::animated"}%alsoResize:'textarea.foswikiTextarea', modal:true, draggable:true, resizable:true, width:855, show: {effect: 'drop', direction: 'up', duration:'fast'}, hide:{ effect: 'drop', direction: 'up', duration:'fast' }%TMPL:END%
 
 %TMPL:DEF{"dialog"}%<div class="jqUIDialog {%TMPL:P{"dialog::params"}%}" title="%MAKETEXT{"Edit chapter '[_1]'" args="%URLPARAM{"title" default="%URLPARAM{"from"}%"}%"}%">
   <form name="EditForm" action="%SCRIPTURLPATH{"save"}%" method="post" class="ecpForm">
@@ -10,7 +10,7 @@
   <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
   <input type="hidden" name="redirectto" value="%SCRIPTURL{"view"}%/%WEB%/%TOPIC%#%URLPARAM{"id"}%" />
   <textarea name="beforetext" style="display:none" >%EXTRACTCHAPTER{before="%URLPARAM{"from" default="0"}%" encode="on"}%</textarea>
-  <textarea name="chapter" class="jqFocus foswikiTextarea natEditTextArea natedit" rows="%EDITBOXHEIGHT%" cols="%EDITBOXWIDTH%" wrap="virtual">%EXTRACTCHAPTER{from="%URLPARAM{"from" default="0"}%" to="%URLPARAM{"to"}%" encode="on"}%</textarea>
+  <textarea name="chapter" class="foswikiTextarea natedit" rows="%EDITBOXHEIGHT%" cols="%EDITBOXWIDTH%" wrap="virtual">%EXTRACTCHAPTER{from="%URLPARAM{"from" default="0"}%" to="%URLPARAM{"to"}%" encode="on"}%</textarea>
   <textarea name="aftertext" style="display:none">%EXTRACTCHAPTER{after="%URLPARAM{"to"}%" encode="on"}%</textarea>
   <textarea name="text" style="display:none" >%EXTRACTCHAPTER{encode="on"}%</textarea>
   <input type="hidden" name="from" value="%URLPARAM{"from" default="0"}%" />

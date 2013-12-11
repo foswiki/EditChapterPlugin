@@ -51,7 +51,7 @@ jQuery(function($) {
         topic = $this.find("input[name='topic']").val(),
         $dialog = $this.parent();
 
-    $dialog.bind("cancel", function() {
+    $dialog.on("dialogclose", function(ev) {
       $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
         namespace: "EditChapterPlugin",
         method: "unlock",
@@ -62,8 +62,13 @@ jQuery(function($) {
           //alert(json.error.message);
         }
       });
-      $dialog.dialog("close");
+      $dialog.dialog("close").remove();
     });
+
+    // focus textarea
+    setTimeout(function() {
+      $dialog.find(".natedit").focus();
+    }, 500);
 
     // concat before submit
     $this.addClass("ecpInitedForm").submit(function() {
