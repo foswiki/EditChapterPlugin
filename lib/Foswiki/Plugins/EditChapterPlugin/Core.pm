@@ -523,15 +523,17 @@ sub putBackBlocks {
 sub plainify {
   my ($text) = @_;
 
-  $text =~ s/<!--.*?-->//gs;          # remove all HTML comments
-  $text =~ s/\&[a-z]+;/ /g;           # remove entities
+  $text =~ s/<nop>//g;    # remove foswiki pseudo markup
+  $text =~ s/<!--.*?-->//gs;    # remove all HTML comments
+  $text =~ s/\&[a-z]+;/ /g;     # remove entities
   $text =~ s/\[\[([^\]]*\]\[)(.*?)\]\]/$2/g;
-  $text =~ s/<[^>]*>//g;              # remove all HTML tags
-  $text =~ s/[\[\]\*\|=_\&\<\>]/ /g;  # remove Wiki formatting chars
-  $text =~ s/^\-\-\-+\+*\s*\!*/ /gm;  # remove heading formatting and hbar
-  $text =~ s/^\s+//o;                  # remove leading whitespace
-  $text =~ s/\s+$//o;                  # remove trailing whitespace
+  $text =~ s/<[^>]*>//g;        # remove all HTML tags
+  $text =~ s/[\[\]\*\|=_\&\<\>]/ /g;    # remove Wiki formatting chars
+  $text =~ s/^\-\-\-+\+*\s*\!*/ /gm;    # remove heading formatting and hbar
+  $text =~ s/^\s+//o;                   # remove leading whitespace
+  $text =~ s/\s+$//o;                   # remove trailing whitespace
   $text =~ s/['"]//o;
+  $text =~ s/%\w+({.*?})?%//g;          # remove macros
 
   return $text;
 }
