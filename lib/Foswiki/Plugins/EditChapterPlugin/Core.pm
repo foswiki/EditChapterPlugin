@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2013 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,11 +24,11 @@ use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Contrib::JsonRpcContrib::Error ();
 use Error qw(:try);
 
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 
 ###############################################################################
 sub writeDebug {
-  print STDERR "- EditChapterPlugin - $_[0]\n" if DEBUG;
+  print STDERR "- EditChapterPlugin - $_[0]\n" if TRACE;
 }
 
 ###############################################################################

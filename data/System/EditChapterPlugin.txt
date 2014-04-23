@@ -132,11 +132,12 @@ Many thanks to the following sponsors for supporting this work:
    * Set SHORTDESCRIPTION = An easy section editing facility
 -->
 |  Plugin Author(s): | Michael Daum |
-|  Copyright &copy;: | 2008-2013, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2008-2014, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  04 Apr 2014: | improve cleaning up link titles |
 |  12 Dec 2013: | properly unlock cancelled edits |
 |  06 Nov 2013: | prevent !WikiWords being expanded in HTML attributes |
 |  02 Sep 2013: | improved javscript click behavior editing chapters; fixed html markup displayed un-rendered in the modal dialog's title bar |

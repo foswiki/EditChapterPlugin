@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2013 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,14 +16,15 @@
 package Foswiki::Plugins::EditChapterPlugin;
 
 use strict;
+use warnings;
 
 use Foswiki::Func();
 use Foswiki::Plugins();
 use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '4.63';
-our $RELEASE = '4.63';
+our $VERSION = '4.64';
+our $RELEASE = '4.64';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'An easy sectional edit facility';
 our $core;
