@@ -98,13 +98,17 @@ jQuery(function($) {
   });
 
   // init 
-  $(".ecpHeading:not(.ecpDisabled)").hoverIntent({
-    timeout: 500,
-    over: function(event) {
-      $(this).addClass('ecpHover');
-    },
-    out: function(event) {
-      $(this).removeClass('ecpHover');
-    }
+  $(".ecpHeading:not(.ecpDisabled)").livequery(function() {
+    var $this = $(this);
+
+    $this.hoverIntent({
+      timeout: 500,
+      over: function(event) {
+        $this.addClass('ecpHover');
+      },
+      out: function(event) {
+        $this.removeClass('ecpHover');
+      }
+    });
   });
 });

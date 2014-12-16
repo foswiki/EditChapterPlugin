@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1356278770" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1418733168" format="1.1" version="1"}%
 ---+!! %TOPIC%
 %SHORTDESCRIPTION%
 
@@ -137,6 +137,7 @@ Many thanks to the following sponsors for supporting this work:
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  16 Dec 2014: | make it cope with async page loads |
 |  04 Apr 2014: | improve cleaning up link titles |
 |  12 Dec 2013: | properly unlock cancelled edits |
 |  06 Nov 2013: | prevent !WikiWords being expanded in HTML attributes |

@@ -77,7 +77,7 @@ HERE
 
   if ($Foswiki::cfg{Validation}{Method} ne 'none') {
     # make sure strikeone.js is loaded even though there isn't a form on the page yet.
-    Foswiki::Func::addToZone( 'script', 'JavascriptFiles/strikeone', <<JS );
+    Foswiki::Func::addToZone( 'script', 'JavascriptFiles/strikeone', <<'JS' );
 <script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/JavascriptFiles/strikeone.js"></script>
 JS
   }
