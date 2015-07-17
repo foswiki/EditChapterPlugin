@@ -62,13 +62,12 @@ jQuery(function($) {
           //alert(json.error.message);
         }
       });
-      $dialog.dialog("close").remove();
     });
 
     // focus textarea
-    setTimeout(function() {
-      $dialog.find(".natedit").focus();
-    }, 500);
+    window.setTimeout(function() {
+      $dialog.dialog({position: {my:'center', at:'center', of:window}});
+    });
 
     // concat before submit
     $this.addClass("ecpInitedForm").submit(function() {

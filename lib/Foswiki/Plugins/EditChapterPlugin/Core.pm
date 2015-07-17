@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2014 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2015 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ sub new {
     '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" />';
   my $editLabelFormat = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
-    '<span id="$id" class="ecpHeading"> $heading <noautolink><a href="#" class="ecpEdit" title="$title" data-web="$web" data-topic="$topic" data-from="$from" data-to="$to">$img</a></noautolink></span>';
+    '<span id="$id" class="ecpHeading">$heading <noautolink><a href="#" class="ecpEdit" title="$title" data-web="$web" data-topic="$topic" data-from="$from" data-to="$to">$img</a></noautolink></span>';
 
   my $wikiName = Foswiki::Func::getWikiName();
 

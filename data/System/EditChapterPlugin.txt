@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418733168" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437150138" format="1.1" version="1"}%
 ---+!! %TOPIC%
 %SHORTDESCRIPTION%
 
@@ -132,11 +132,12 @@ Many thanks to the following sponsors for supporting this work:
    * Set SHORTDESCRIPTION = An easy section editing facility
 -->
 |  Plugin Author(s): | Michael Daum |
-|  Copyright &copy;: | 2008-2014, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2008-2015, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  17 Jul 2015: | fix positioning of modal dialog |
 |  16 Dec 2014: | make it cope with async page loads |
 |  04 Apr 2014: | improve cleaning up link titles |
 |  12 Dec 2013: | properly unlock cancelled edits |
