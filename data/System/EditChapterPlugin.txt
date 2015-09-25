@@ -123,20 +123,12 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
 ---++ Installation Instructions
 %$INSTALL_INSTRUCTIONS%
 
----++ Plugin Info
+---++ Dependencies
+%$DEPENDENCIES%
 
-Many thanks to the following sponsors for supporting this work:
-   * [[http://www.tecdoc.de][TecDoc Informations System <nop>GmbH]]
+---++ Change History
 
-<!--
-   * Set SHORTDESCRIPTION = An easy section editing facility
--->
-|  Plugin Author(s): | Michael Daum |
-|  Copyright &copy;: | 2008-2015, Michael Daum http://michaeldaumconsulting.com |
-|  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Release: | %$RELEASE% |
-|  Version: | %$VERSION% |
-|  Change History: | <!-- versions below in reverse order -->&nbsp; |
+%TABLE{columnwidths="7em" tablewidth="100%"}%
 |  17 Jul 2015: | fix positioning of modal dialog |
 |  16 Dec 2014: | make it cope with async page loads |
 |  04 Apr 2014: | improve cleaning up link titles |
@@ -173,6 +165,17 @@ Many thanks to the following sponsors for supporting this work:
                   added support for legacy heading markup like =--------#####= |
 |  05 Feb 2008: | compatibility with old <nop>PatternSkin versions |
 |  03 Jan 2008: | initial release |
-|  Dependencies: | %$DEPENDENCIES% |
-|  Plugin Home: | Foswiki:Extensions/EditChapterPlugin |
-|  Support: | Foswiki:Support/EditChapterPlugin |
+
+<!--
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
+
+%META:FORM{name="PackageForm"}%
+%META:FIELD{name="Author" title="Author" value="Michael Daum"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2008-2015, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Home" title="Home" value="Foswiki:Extensions/EditChapterPlugin"}%
+%META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%
+%META:FIELD{name="Release" title="Release" value="%$RELEASE%"}%
+%META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/EditChapterPlugin"}%
+%META:FIELD{name="Support" title="Support" value="Foswiki:Support/EditChapterPlugin"}%
+%META:FIELD{name="Version" title="Version" value="%$VERSION%"}%
