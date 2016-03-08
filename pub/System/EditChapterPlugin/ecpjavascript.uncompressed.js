@@ -12,7 +12,7 @@ jQuery(function($) {
         }, $this.data());
 
     // lock
-    $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+    $.jsonRpc(foswiki.getScriptUrl("jsonrpc"), {
       namespace: 'EditChapterPlugin',
       method: 'lock',
       params: {
@@ -20,15 +20,16 @@ jQuery(function($) {
       },
       success: function() {
         if (typeof(href) === 'undefined' || href == '#' || href == '') {
-          href = foswiki.getPreference("SCRIPTURL")+"/rest/RenderPlugin/template?" +
-            "name=edit.chapter" +
-            "&expand=dialog" +
-            "&topic=" + opts.web + "." + opts.topic +
-            "&from=" + opts.from  +
-            "&to=" + opts.to  +
-            "&title=" + opts.title +
-            "&id=" + opts.id +
-            "&t=" + (new Date()).getTime();
+          href = foswiki.getScriptUrl("rest", "RenderPlugin", "template", {
+            "name": "edit.chapter",
+            "expand": "dialog",
+            "topic": opts.web + "." + opts.topic,
+            "from": opts.from,
+            "to": opts.to,
+            "title": opts.title,
+            "id": opts.id,
+            "t": (new Date()).getTime()
+          });
         }
         $.get(href, function(content) { 
           var $content = $(content);
@@ -52,7 +53,7 @@ jQuery(function($) {
         $dialog = $this.parent();
 
     $dialog.on("dialogclose", function(ev) {
-      $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+      $.jsonRpc(foswiki.getScriptUrl("jsonrpc"), {
         namespace: "EditChapterPlugin",
         method: "unlock",
         params: {
@@ -71,6 +72,9 @@ jQuery(function($) {
 
     // concat before submit
     $this.addClass("ecpInitedForm").submit(function() {
+      // let editor kick in and do its thing before we snag the textarea's value
+      $this.trigger("beforeSubmit"); 
+
       var before = $this.find('[name=beforetext]'),
           after = $this.find('[name=aftertext]'),
           chapter = $this.find('[name=chapter]'),

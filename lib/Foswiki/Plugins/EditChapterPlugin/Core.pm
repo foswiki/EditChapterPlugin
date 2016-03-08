@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2016 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ sub new {
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_MAXDEPTH") || 6;
   my $editImg = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITIMG") || 
-    '<img src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/pencil.png" height="16" width="16" />';
+    '%JQICON{"fa-pencil"}%';
   my $editLabelFormat = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
     '<span id="$id" class="ecpHeading">$heading <noautolink><a href="#" class="ecpEdit" title="$title" data-web="$web" data-topic="$topic" data-from="$from" data-to="$to">$img</a></noautolink></span>';
@@ -177,7 +177,7 @@ sub commonTagsHandler {
   my $renderer = $Foswiki::Plugins::SESSION->renderer;
   $text = takeOutBlocks($text, 'textarea', $blocks);
   $text = takeOutBlocks($text, 'verbatim', $blocks);
-  $text = takeOutBlocks( $text, 'pre', $blocks);
+  $text = takeOutBlocks($text, 'pre', $blocks);
 
   $text =~ s/%(EN|DIS)ABLEEDITCHAPTER%/
     $this->handleEnableEditChapter($web, $topic, $1)
@@ -533,7 +533,7 @@ sub plainify {
   $text =~ s/^\s+//o;                   # remove leading whitespace
   $text =~ s/\s+$//o;                   # remove trailing whitespace
   $text =~ s/['"]//o;
-  $text =~ s/%\w+({.*?})?%//g;          # remove macros
+  $text =~ s/%\w+(?:\{.*?\})?%//g;          # remove macros
 
   return $text;
 }

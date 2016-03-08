@@ -27,6 +27,9 @@
 .ecpDisabled {
   padding:0px;
 }
+.ecpEdit .fa {
+  font-size:16px;
+}
 .ecpDisabled .ecpEdit,
 .ecpDisabled img {
   display:none;
@@ -36,6 +39,7 @@
   width:100%;
   margin:0px;
 } 
+.foswikiToc .ecpHeading .jqIcon,
 .foswikiToc .ecpHeading img {
   display:none;
 }
