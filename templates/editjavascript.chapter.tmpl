@@ -1,9 +1,8 @@
 %TMPL:INCLUDE{"editjavascript"}%<!-- template: editjavascript.chapter.tmpl -->
 %TMPL:DEF{"javascript"}%%TMPL:P{"defaultjavascript"}%%TMPL:P{"editjavascript"}%%TMPL:P{"chapterjavascript"}%%TMPL:END%
-%TMPL:DEF{"chapterjavascript"}%<!-- chapterjavascript -->
-%ADDTOZONE{"script"
+%TMPL:DEF{"chapterjavascript"}%%ADDTOZONE{"script"
   tag="EDITJAVASCRIPT::INIT"
-  text="<script type='text/javascript'>
+  text="<script>
 /* to hook into patternskin */
 jQuery(function($) {
   $('.patternActionButtons input').click(function() {
@@ -12,5 +11,5 @@ jQuery(function($) {
 });
 </script>"
   requires="JQUERYPLUGIN"
-}%<!-- //chapterjavascript -->%TMPL:END%
+}%%TMPL:END%
 

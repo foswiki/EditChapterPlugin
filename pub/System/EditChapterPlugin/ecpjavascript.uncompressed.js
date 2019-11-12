@@ -1,6 +1,6 @@
 /* init gui */
+"use strict";
 jQuery(function($) {
-  'use strict';
 
   // init edit link
   $(document).on("click", ".ecpEdit", function() {
@@ -24,6 +24,8 @@ jQuery(function($) {
             "name": "edit.chapter",
             "expand": "dialog",
             "topic": opts.web + "." + opts.topic,
+            "baseweb": opts.baseWeb,
+            "basetopic": opts.baseTopic,
             "from": opts.from,
             "to": opts.to,
             "title": opts.title,
@@ -50,9 +52,10 @@ jQuery(function($) {
   $(".ecpForm:not(.ecpInitedForm)").livequery(function() {
     var $this = $(this),
         topic = $this.find("input[name='topic']").val(),
-        $dialog = $this.parent();
+        $dialog = $this.parent(),
+        insideSubmit = false;
 
-    $dialog.on("dialogclose", function(ev) {
+    $dialog.on("dialogclose", function() {
       $.jsonRpc(foswiki.getScriptUrl("jsonrpc"), {
         namespace: "EditChapterPlugin",
         method: "unlock",
@@ -60,9 +63,78 @@ jQuery(function($) {
           "topic": topic
         },
         error: function(json, textStatus, xhr) {
-          //alert(json.error.message);
+          console && console.error(json.error.message);
         }
       });
+
+      $dialog.dialog("destroy").remove();
+    });
+
+    $dialog.on("dialogresize", function(ev, ui) {
+      var editor = $this.find(".natedit").data("natedit");
+      if (editor) {
+        var editorContainer = editor.container,
+            dialogContainer = $dialog,
+            toolbar = $dialog.find(".ui-natedit-toolbar"),
+            height = dialogContainer.height() - toolbar.height() - editorContainer.position().top; // SMELL: padding
+        if (typeof(editor.setSize) === 'function') {
+          editor.setSize(undefined, height);
+        } else {
+          $(editor.txtarea).height(height);
+        }
+      }
+    });
+
+    // concat before submit
+    $this.addClass("ecpInitedForm").submit(function() {
+      var editor;
+
+      // prevent an endless loop
+      if (insideSubmit) {
+        insideSubmit = false;
+        return;
+      }
+
+      // now prepare it
+      insideSubmit = true;
+
+      // handler to combine the full text again once the edit engine has finished its beforeSubmit handler
+      function doit() {
+        var before = $this.find('[name=beforetext]'),
+            after = $this.find('[name=aftertext]'),
+            chapter = $this.find('[name=chapter]'),
+            text = $this.find("[name=text]"),
+            chapterText, lastChar;
+
+        if (!before.length || !after.length || !chapter.length) {
+          return false;
+        }
+
+        chapterText = chapter.val();
+        lastChar = chapterText.substr(chapterText.length-1, 1);
+        if (lastChar != '\n') {
+          chapterText += '\n';
+        }
+        text.val(before.val()+chapterText+after.val());
+
+        $this.submit();
+      }
+
+      // let editor kick in and do its thing before we snag the textarea's value
+      editor = $this.find(".natedit").data("natedit");
+      if (typeof(editor) === 'undefined') {
+        doit();
+      } else {
+        var dfd = editor.beforeSubmit();
+        if (typeof(dfd) !== 'undefined') {
+          dfd.then(doit);
+        } else {
+          doit();
+        }
+      }
+
+      // the real submit happens inside doit() when beforeSubmit has finished
+      return false;
     });
 
     // focus textarea
@@ -70,34 +142,6 @@ jQuery(function($) {
       $dialog.dialog({position: {my:'center', at:'center', of:window}});
     });
 
-    // concat before submit
-    $this.addClass("ecpInitedForm").submit(function() {
-      // let editor kick in and do its thing before we snag the textarea's value
-      $this.trigger("beforeSubmit"); 
-
-      var before = $this.find('[name=beforetext]'),
-          after = $this.find('[name=aftertext]'),
-          chapter = $this.find('[name=chapter]'),
-          text = $this.find("[name=text]"),
-          chapterText, lastChar;
-
-      //console.log("called ECP's beforeSubmitHandler");
-
-      if (!before.length || !after.length || !chapter.length) {
-        //console.log("before=", before.length, " after=", after.length, " chapter=",chapter.length);
-        return false;
-      }
-
-      //console.log("merging text");
-
-      chapterText = chapter.val();
-      lastChar = chapterText.substr(chapterText.length-1, 1);
-      if (lastChar != '\n') {
-        chapterText += '\n';
-      }
-      text.val(before.val()+chapterText+after.val());
-      //return false;
-    });
   });
 
   // init 

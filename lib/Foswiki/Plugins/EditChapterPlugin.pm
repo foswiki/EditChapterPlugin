@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2016 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2018 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,15 +23,14 @@ use Foswiki::Plugins();
 use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '4.80';
-our $RELEASE = '08 Mar 2016';
+our $VERSION = '5.00';
+our $RELEASE = '12 Nov 2019';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'An easy section editing facility';
 our $core;
 
 ###############################################################################
 sub initPlugin {
-  $core = undef;
 
   Foswiki::Func::registerTagHandler('EXTRACTCHAPTER', sub {
     return getCore(shift)->handleEXTRACTCHAPTER(@_);
@@ -61,10 +60,20 @@ sub getCore {
 }
 
 ###############################################################################
+sub finishPlugin {
+  $core->finish() if defined $core;
+
+  undef $core;
+}
+
+###############################################################################
 sub commonTagsHandler {
   ### my ( $text, $topic, $web, $meta ) = @_;
 
   $_[0] =~ s/%(STOP|START)CHAPTER%/<!-- $1CHAPTER -->/g; # cleanup
+
+  # check for headings early enough
+  return unless $_[0] =~ /(^)(---+[\+#]{1,6}[0-9]*(?:!!)?)([^\+#!].+?)($)/m;
 
   my $context = Foswiki::Func::getContext();
   return unless $context->{'view'};

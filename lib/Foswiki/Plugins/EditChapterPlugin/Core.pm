@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2016 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2019 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ sub new {
     '%JQICON{"fa-pencil"}%';
   my $editLabelFormat = 
     Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_EDITLABELFORMAT") || 
-    '<span id="$id" class="ecpHeading">$heading <noautolink><a href="#" class="ecpEdit" title="$title" data-web="$web" data-topic="$topic" data-from="$from" data-to="$to">$img</a></noautolink></span>';
+    '<span id="$id" class="ecpHeading">$heading <noautolink><a class="ecpEdit" title="$title" data-web="$web" data-topic="$topic" data-base-web="$baseweb" data-base-topic="$basetopic" data-from="$from" data-to="$to">$img</a></noautolink></span>';
 
   my $wikiName = Foswiki::Func::getWikiName();
 
@@ -63,22 +63,21 @@ sub new {
   };
 
   my $enabled = 
-    Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_ENABLED") || 'on';
+    Foswiki::Func::isTrue(Foswiki::Func::getPreferencesValue("EDITCHAPTERPLUGIN_ENABLED"), 1);
 
-  $enabled = ($enabled eq 'on')?1:0;
-  $this->{enabled}{$this->{baseWeb}.'.'.$this->{baseTopic}} = $enabled;
+  $this->{_enabled}{$this->{baseWeb}.'.'.$this->{baseTopic}} = $enabled;
 
   Foswiki::Func::addToZone('head', 'EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI');
 <link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
 HERE
   Foswiki::Func::addToZone('script', 'EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::HOVERINTENT');
-<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
+<script src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
 HERE
 
   if ($Foswiki::cfg{Validation}{Method} ne 'none') {
     # make sure strikeone.js is loaded even though there isn't a form on the page yet.
     Foswiki::Func::addToZone( 'script', 'JavascriptFiles/strikeone', <<'JS' );
-<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/JavascriptFiles/strikeone.js"></script>
+<script src="%PUBURLPATH%/%SYSTEMWEB%/JavascriptFiles/strikeone.js"></script>
 JS
   }
 
@@ -86,16 +85,23 @@ JS
   Foswiki::Plugins::JQueryPlugin::createPlugin("ui::dialog");
   Foswiki::Plugins::JQueryPlugin::createPlugin("jsonrpc");
   Foswiki::Plugins::JQueryPlugin::createPlugin("natedit");
-
+  Foswiki::Plugins::JQueryPlugin::createPlugin("uploader"); # load if installed
 
   return bless($this, $class);
 }
 
 ###############################################################################
+sub finish {
+  my $this = shift;
+
+  undef $this->{_enabled};
+  undef $this->{_permission};
+}
+###############################################################################
 sub handleEnableEditChapter {
   my ($this, $web, $topic, $flag) = @_;
 
-  $this->{enabled}{$web.'.'.$topic} = ($flag eq 'EN')?1:0;
+  $this->{_enabled}{$web.'.'.$topic} = ($flag eq 'EN')?1:0;
 
   #writeDebug("called handleEnableEditChapter($web, $topic, $flag)");
 
@@ -160,16 +166,19 @@ sub jsonRpcUnlockTopic {
 ###############################################################################
 sub commonTagsHandler {
   my $this = shift;
-  ### my ( $text, $topic, $web, $include, $meta ) = @_;
+  # my ( $text, $topic, $web, $include, $meta ) = @_;
 
   my $text = $_[0];
   my $topic = $_[1];
   my $web = $_[2];
+  my $insideInclude = $_[3];
+  my $meta = $_[4];
 
   return unless $topic;
 
-  my $insideInclude = $_[3] || Foswiki::Func::getContext()->{insideInclude} || 0;
-  my $key = $web.'.'.$topic;
+  $insideInclude = $insideInclude || Foswiki::Func::getContext()->{insideInclude} || 0;
+
+  my $key = $web . '.' . $topic;
 
   #writeDebug("called commonTagsHandler($web, $topic)");
 
@@ -183,22 +192,19 @@ sub commonTagsHandler {
     $this->handleEnableEditChapter($web, $topic, $1)
   /ge;
 
-  unless (defined $this->{enabled}{$key}) {
-    my $access = 
-      Foswiki::Func::checkAccessPermission('change', $this->{wikiName}, undef, $topic, $web, undef);
+  $this->{_permission}{$key} = Foswiki::Func::checkAccessPermission('change', $this->{wikiName}, undef, $topic, $web, $meta)
+    unless defined $this->{_permission}{$key};
 
-    # disable edit if we have no access
-    $this->{enabled}{$key} = 0 unless $access;
-  }
+  $this->{_enabled}{$key} = 0 unless $this->{_permission}{$key};
 
-  my $enabled = $this->{enabled}{$key};
+  my $enabled = $this->{_enabled}{$key};
   $enabled = 1 unless defined $enabled;
 
   # prohibit edit on self-includes
   $enabled = 0 if $insideInclude && 
     $this->{baseWeb} eq $web && $this->{baseTopic} eq $topic;
 
-  #writeDebug("enabled=$enabled");
+  #writeDebug("web=$web, topic=$topic, key=$key, baseWeb=$this->{baseWeb}, baseTopic=$this->{baseTopic}, enabled=$enabled, insideInclude=$insideInclude, _permission=$this->{_permission}{$key}, _enabled=".($this->{_enabled}{$key}//'undef'));
 
   # loop over all lines
   my $chapterNumber = 0;
@@ -238,7 +244,7 @@ sub handleSection {
     my $title = plainify($heading, $web, $topic);
 
     my $id = lc($web.'_'.$topic);
-    $id =~ s/\//_/go;
+    $id =~ s/\//_/g;
     $id = 'chapter_'.$id.'_'.$$chapterNumber;
 
     my %args = (
@@ -281,7 +287,7 @@ sub handleSection {
 sub handleEXTRACTCHAPTER {
   my ($this, $params, $theTopic, $theWeb) = @_;
 
-  writeDebug("called handleEXTRACTCHAPTER()");
+  #writeDebug("called handleEXTRACTCHAPTER()");
 
   my $theFrom = $params->{from} || 0;
   my $theTo = $params->{to} || 9999999;
@@ -297,22 +303,22 @@ sub handleEXTRACTCHAPTER {
   # 3: extract the fragment defined by after
   my $extractionMode = 1; 
 
-  $theFrom =~ s/[^\d]//go;
-  $theTo =~ s/[^\d]//go;
+  $theFrom =~ s/[^\d]//g;
+  $theTo =~ s/[^\d]//g;
 
   if (defined($theNumber)) {
-    $theNumber =~ s/[^\d]//go;
+    $theNumber =~ s/[^\d]//g;
     $theFrom = $theNumber;
     $theTo = $theNumber;
   }
   if (defined($theBefore)) {
-    $theBefore =~ s/[^\d]//go;
+    $theBefore =~ s/[^\d]//g;
     $theBefore ||= 0;
     $theTo = $theBefore - 1;
     $extractionMode = 2;
   }
   if (defined($theAfter)) {
-    $theAfter =~ s/[^\d]//go;
+    $theAfter =~ s/[^\d]//g;
     $theAfter ||= 0;
     $theFrom = $theAfter + 1;
     $extractionMode = 3;
@@ -320,7 +326,7 @@ sub handleEXTRACTCHAPTER {
 
   return '' if $theTo < 0;
 
-  writeDebug("extractionMode=$extractionMode");
+  #writeDebug("extractionMode=$extractionMode");
 
   my $thisWeb = $params->{web} || $this->{baseWeb};
   my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $this->{baseTopic};
@@ -328,7 +334,7 @@ sub handleEXTRACTCHAPTER {
   ($thisWeb, $thisTopic) = 
     Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
 
-  writeDebug("thisWeb=$thisWeb, thisTopic=$thisTopic, theFrom=$theFrom, theTo=$theTo");
+  #writeDebug("thisWeb=$thisWeb, thisTopic=$thisTopic, theFrom=$theFrom, theTo=$theTo");
 
   my ($meta, $text) = Foswiki::Func::readTopic($thisWeb, $thisTopic);
 
@@ -351,11 +357,11 @@ sub handleEXTRACTCHAPTER {
   # CHAPTER parser
   while ($text =~ /(^.*$)/gm) {
     my $line = $1;
-    writeDebug("line='$line'");
+    #writeDebug("line='$line'");
 
     # skip pre's and verbatims
-    $insidePre++ if $line =~ /<(pre|verbatim)[^>]*>/goi;
-    $insidePre-- if $line =~ /<\/(pre|verbatim)>/goi;
+    $insidePre++ if $line =~ /<(pre|verbatim)[^>]*>/gi;
+    $insidePre-- if $line =~ /<\/(pre|verbatim)>/gi;
     next if $insidePre > 0;
 
     # track STARTCHAPTER
@@ -364,16 +370,16 @@ sub handleEXTRACTCHAPTER {
         # adjust fromPos 
         if ($extractionMode == 1) { # normal mode
           $fromPos = pos($text) + 1;
-          writeDebug("found STARTCHAPTER, starting at $fromPos");
+          #writeDebug("found STARTCHAPTER, starting at $fromPos");
         }
       } else {
         # remember STARTCHAPTER to adjust toPos in before-mode
         $startChapterPos = pos($text) + 1; # remember previous STARTCHAPTER
-        writeDebug("found STARTCHAPTER at $startChapterPos");
+        #writeDebug("found STARTCHAPTER at $startChapterPos");
 
         # stop at STARTCHAPTER mark when toPos already found
         if ($extractionMode == 2 && defined($toPos)) {
-          writeDebug("stopping at STARTMARK as we are in before-mode");
+          #writeDebug("stopping at STARTMARK as we are in before-mode");
           last;
         }
       }
@@ -385,19 +391,19 @@ sub handleEXTRACTCHAPTER {
         # adjust toPos and bail out
         if ($extractionMode == 1) { # normal mode
           $toPos = pos($text) - length($line);
-          writeDebug("found STOPCHAPTER, stopping at $toPos");
+          #writeDebug("found STOPCHAPTER, stopping at $toPos");
           last;
         }
       } else {
         # remember STOPCHAPTER to adjust toPos in after-mode
         $stopChapterPos = pos($text) - length($line); # remember previous STOPCHAPTER
-        writeDebug("found STOPCHAPTER at $stopChapterPos");
+        #writeDebug("found STOPCHAPTER at $stopChapterPos");
         next;
       }
     }
 
     # detect chapter headlines
-    if ($line =~ /^---+[\+#]{$this->{minDepth},$this->{maxDepth}}(?:!!)?\s*(.+?)$/m) {
+    if ($line =~ /^---+[\+#]{$this->{minDepth},$this->{maxDepth}}[0-9]*(?:!!)?([^\+#!].+?)$/m) {
       $chapterNumber++;
 
       # begin of chapter
@@ -405,14 +411,14 @@ sub handleEXTRACTCHAPTER {
         $fromPos = pos($text) - length($line);
         $insideChapter = 1;
 
-        writeDebug("found start at $fromPos");
+        #writeDebug("found start at $fromPos");
 
         # in 'after' extractionMode use the stopChapterPos for this fragment when:
         # 1. a STOPCHAPTER mark was found
         # 2. this is after-mode
         # 3. the fragment normally starts later
         if ($extractionMode == 3 && defined $stopChapterPos && $fromPos > $stopChapterPos) {
-          writeDebug("using stopChapterPos in after-mode");
+          #writeDebug("using stopChapterPos in after-mode");
           $fromPos = $stopChapterPos;
           $stopChapterPos = undef;
         }
@@ -425,7 +431,7 @@ sub handleEXTRACTCHAPTER {
 
         # in-before mode stop at next chapter 
         if ($extractionMode == 2 && defined $toPos) {
-          writeDebug("got next chapter ... bailing out");
+          #writeDebug("got next chapter ... bailing out");
           last;
         }
 
@@ -434,20 +440,20 @@ sub handleEXTRACTCHAPTER {
         $toPos = pos($text) - length($line);
         $insideChapter = 0;
 
-        writeDebug("found end at $toPos");
+        #writeDebug("found end at $toPos");
 
         # continue in before-mode; instead scan til end of text or STARTCHAPTER mark
         if ($extractionMode == 2) {
-          writeDebug("... continuing searching for the next STARTCHAPTER");
+          #writeDebug("... continuing searching for the next STARTCHAPTER");
         } else {
-          writeDebug("bailing out");
+          #writeDebug("bailing out");
           last; 
         }
       }
 
       # reset the last STOPCHAPTER mark as we passed another chapter further down
       if ($chapterNumber < $theFrom) {
-        writeDebug("resetting stopChapterPos");
+        #writeDebug("resetting stopChapterPos");
         $stopChapterPos = undef;
       }
     }
@@ -455,7 +461,7 @@ sub handleEXTRACTCHAPTER {
 
   # if we did not find the chapter headline but a STOPCHAPTER marker then use this
   if (!defined($fromPos) && defined ($stopChapterPos)) {
-    writeDebug("using STOPCHAPTER marker for undefined fromPos");
+    #writeDebug("using STOPCHAPTER marker for undefined fromPos");
     $fromPos = $stopChapterPos;
     $stopChapterPos = undef;
   }
@@ -470,20 +476,20 @@ sub handleEXTRACTCHAPTER {
 
   # in before-mode append the part to the following STARTCHAPTER mark
   if ($extractionMode == 2 && defined($startChapterPos) && $toPos < $startChapterPos) {
-    writeDebug("moving toPos=$toPos to startChapterPos=$startChapterPos");
+    #writeDebug("moving toPos=$toPos to startChapterPos=$startChapterPos");
     $toPos = $startChapterPos;
   }
 
   # in after-mode prepend the part to the previous STOPCHAPTER mark
   if ($extractionMode == 3 && defined($stopChapterPos)) {
-    writeDebug("moving toPos=$toPos to stopChapterPos=$stopChapterPos");
+    #writeDebug("moving toPos=$toPos to stopChapterPos=$stopChapterPos");
     $toPos = $stopChapterPos;
   }
 
   # now set the length of the extracted chunk
   $length = $toPos - $fromPos;
 
-  writeDebug("fromPos=$fromPos, toPos=$toPos, length=$length");
+  #writeDebug("fromPos=$fromPos, toPos=$toPos, length=$length");
   return '' if $length <= 0;
 
   my $result = substr($text, $fromPos, $length);

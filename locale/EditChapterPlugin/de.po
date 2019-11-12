@@ -1,5 +1,5 @@
 # EditChapterPlugin translations
-# Copyright (C) 2012-2014 Michael Daum
+# Copyright (C) 2012-2019 Michael Daum
 # This file is distributed under the same license as the EditChapterPlugin package.
 # Michael Daum <foswiki@michaeldaumconsulting.com>, 2013.
 msgid ""
@@ -16,18 +16,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/edit.chapter.tmpl:20
+#: templates/edit.chapter.tmpl:21
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: templates/edit.chapter.tmpl:21
+#: templates/edit.chapter.tmpl:22
 msgid "Edit all"
-msgstr "Alles editieren"
+msgstr "Alles bearbeiten"
 
 #: templates/edit.chapter.tmpl:7
 msgid "Edit chapter '%1'"
-msgstr ""
+msgstr "Bearbeite Kapitel '%1'"
 
-#: templates/edit.chapter.tmpl:19
-msgid "OK"
-msgstr "OK"
+#: templates/edit.chapter.tmpl:20
+msgid "Save"
+msgstr "Speichern"
