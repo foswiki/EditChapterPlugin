@@ -1,11 +1,17 @@
 .ecpHeading {
   position:relative;
-  padding-right:20px;
+  padding-right:25px;
 }
-.ecpEditHover {
-  background:transparent !important;
-  padding:0 !important;
-  border:0 !important;
+.ecpEdit {
+  position:absolute;
+  top:50%;
+  right:0;
+  cursor:pointer;
+  font-size:16px;
+  line-height:1;
+  margin-top:-8px;
+  opacity:0;
+  transition: opacity 300ms;
 }
 .ecpEdit img {
   width:16px;
@@ -14,22 +20,16 @@
   border:0;
 }
 
-.ecpEdit {
-  visibility:hidden;
-  position:absolute;
-  right:-0.5em;
-  bottom:0;
-  cursor:pointer;
-}
-.ecpHover .ecpEdit {
-  visibility:visible;
-  background-color:transparent;
+h1:hover .ecpEdit,
+h2:hover .ecpEdit,
+h3:hover .ecpEdit,
+h4:hover .ecpEdit,
+h5:hover .ecpEdit,
+h6:hover .ecpEdit {
+  opacity:1;
 }
 .ecpDisabled {
   padding:0;
-}
-.ecpEdit .fa {
-  font-size:16px;
 }
 .ecpDisabled .ecpEdit,
 .ecpDisabled img {
@@ -40,6 +40,11 @@
   width:100%;
   margin:0;
 } 
-.foswikiToc .ecpHeading > .jqIcon {
+.foswikiToc .ecpHeading > .foswikiIcon {
   display:none;
+}
+.ecpDialogOpts {
+  display:flex;
+  align-items:center;
+  gap:1em;
 }

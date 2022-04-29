@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2022 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,12 +26,10 @@ use Error qw(:try);
 
 use constant TRACE => 0; # toggle me
 
-###############################################################################
 sub writeDebug {
   print STDERR "- EditChapterPlugin - $_[0]\n" if TRACE;
 }
 
-###############################################################################
 sub new {
   my $class = shift;
   my $session = shift;
@@ -70,7 +68,7 @@ sub new {
   Foswiki::Func::addToZone('head', 'EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI');
 <link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
 HERE
-  Foswiki::Func::addToZone('script', 'EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::HOVERINTENT');
+  Foswiki::Func::addToZone('script', 'EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::HOVERINTENT, JQUERYPLUGIN::PNOTIFY');
 <script src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
 HERE
 
@@ -82,22 +80,20 @@ JS
   }
 
   Foswiki::Plugins::JQueryPlugin::createPlugin("hoverintent");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("ui::dialog");
+  Foswiki::Plugins::JQueryPlugin::createPlugin("FoswikiTemplate");
   Foswiki::Plugins::JQueryPlugin::createPlugin("jsonrpc");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("natedit");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("uploader"); # load if installed
+  Foswiki::Plugins::JQueryPlugin::createPlugin("pnotify");
 
   return bless($this, $class);
 }
 
-###############################################################################
 sub finish {
   my $this = shift;
 
   undef $this->{_enabled};
   undef $this->{_permission};
 }
-###############################################################################
+
 sub handleEnableEditChapter {
   my ($this, $web, $topic, $flag) = @_;
 
@@ -108,7 +104,6 @@ sub handleEnableEditChapter {
   return '';
 }
 
-###############################################################################
 sub jsonRpcLockTopic {
   my ($this, $request) = @_;
 
@@ -138,7 +133,6 @@ sub jsonRpcLockTopic {
   return 'ok';
 }
 
-###############################################################################
 sub jsonRpcUnlockTopic {
   my ($this, $request) = @_;
 
@@ -163,7 +157,6 @@ sub jsonRpcUnlockTopic {
   return 'ok';
 }
 
-###############################################################################
 sub commonTagsHandler {
   my $this = shift;
   # my ( $text, $topic, $web, $include, $meta ) = @_;
@@ -220,7 +213,6 @@ sub commonTagsHandler {
   $_[0] = $text;
 }
 
-###############################################################################
 sub handleSection {
   my ($this, $web, $topic, $chapterNumber, $heading, $before, $after, $enabled) = @_;
 
@@ -258,7 +250,7 @@ sub handleSection {
       t => time(),
     );
 
-    my $url = Foswiki::Func::getScriptUrlPath('RenderPlugin', 'template', 'rest', %args);
+    my $url = Foswiki::Func::getScriptUrlPath('RenderPlugin', 'jsonTemplate', 'rest', %args);
     my $anchor = '<a name="'.$id.'"></a>';
 
     # format
@@ -283,7 +275,6 @@ sub handleSection {
   return $result;
 }
 
-###############################################################################
 sub handleEXTRACTCHAPTER {
   my ($this, $params, $theTopic, $theWeb) = @_;
 
@@ -500,7 +491,6 @@ sub handleEXTRACTCHAPTER {
   return $result;
 }
 
-###############################################################################
 sub entityEncode {
   my ( $text, $extra ) = @_;
   $extra ||= '';
@@ -511,21 +501,18 @@ sub entityEncode {
   return $text;
 }
 
-###############################################################################
 # compatibility wrapper 
 sub takeOutBlocks {
   return Foswiki::takeOutBlocks(@_) if defined &Foswiki::takeOutBlocks;
   return $Foswiki::Plugins::SESSION->{renderer}->takeOutBlocks(@_);
 }
 
-###############################################################################
 # compatibility wrapper 
 sub putBackBlocks {
   return Foswiki::putBackBlocks(@_) if defined &Foswiki::putBackBlocks;
   return $Foswiki::Plugins::SESSION->{renderer}->putBackBlocks(@_);
 }
 
-###############################################################################
 sub plainify {
   my ($text) = @_;
 
@@ -540,6 +527,8 @@ sub plainify {
   $text =~ s/\s+$//o;                   # remove trailing whitespace
   $text =~ s/['"]//o;
   $text =~ s/%\w+(?:\{.*?\})?%//g;          # remove macros
+  $text =~ s/##.*?#//g;          # remove any explicit numbering stuff
+  $text =~ s/#//g;          # remove any explicit numbering stuff
 
   return $text;
 }

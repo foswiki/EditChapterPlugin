@@ -129,6 +129,9 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
 ---++ Change History
 
 %TABLE{columnwidths="7em" tablewidth="100%"}%
+|  29 Apr 2022: | fixed error handling in case of a lock; \
+                  add support for "force new revision" and !RevCommentPlugin; \
+                  using =jsonTemplate= now for better integration of the editor being loaded  |
 |  12 Nov 2019: | performance improvements checking for headings in a topic; support for !TopicInteractionPlugin's attachment uploader; fixed geometry of the textarea within a dialog box being resized | 
 |  08 Mar 2016: | added a =beforeSubmit= event so that other plugins (wysiwyg, codemirror, ...) can interact with the textarea before it is submited; \
                   properly construct urls in javascript respecting SCRIPTSUFFIX and the like | 
@@ -171,7 +174,7 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
 
 %META:FORM{name="PackageForm"}%
 %META:FIELD{name="Author" title="Author" value="Michael Daum"}%
-%META:FIELD{name="Copyright" title="Copyright" value="2008-2019, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2008-2022, Michael Daum"}%
 %META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
 %META:FIELD{name="Home" title="Home" value="Foswiki:Extensions/EditChapterPlugin"}%
 %META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%

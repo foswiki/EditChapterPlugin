@@ -20,7 +20,7 @@ msgstr ""
 
 #: templates/edit.chapter.tmpl:21
 msgid "Cancel"
-msgstr "Rinuncia"
+msgstr "Annullare"
 
 #: templates/edit.chapter.tmpl:22
 #, fuzzy

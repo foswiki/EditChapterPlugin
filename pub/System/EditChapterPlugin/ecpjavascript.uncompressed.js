@@ -1,6 +1,15 @@
-/* init gui */
+/*
+ * EditChapterPlugin
+ *
+ * Copyright (C) 2008-2021 Michael Daum http://michaeldaumconsulting.com
+ *
+ * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
+ *
+ */
+
 "use strict";
-jQuery(function($) {
+
+(function($) {
 
   // init edit link
   $(document).on("click", ".ecpEdit", function() {
@@ -11,37 +20,49 @@ jQuery(function($) {
           title: $this.attr('title')
         }, $this.data());
 
+
     // lock
     $.jsonRpc(foswiki.getScriptUrl("jsonrpc"), {
       namespace: 'EditChapterPlugin',
       method: 'lock',
       params: {
         "topic": opts.web+"."+opts.topic
-      },
-      success: function() {
-        if (typeof(href) === 'undefined' || href == '#' || href == '') {
-          href = foswiki.getScriptUrl("rest", "RenderPlugin", "template", {
-            "name": "edit.chapter",
-            "expand": "dialog",
-            "topic": opts.web + "." + opts.topic,
-            "baseweb": opts.baseWeb,
-            "basetopic": opts.baseTopic,
-            "from": opts.from,
-            "to": opts.to,
-            "title": opts.title,
-            "id": opts.id,
-            "t": (new Date()).getTime()
-          });
-        }
-        $.get(href, function(content) { 
-          var $content = $(content);
-          $content.hide();
-          $("body").append($content);
-          $content.data("autoOpen", true);
-        }); 
-      },
-      error: function(json, textStatus, xhr) {
-        alert(json.error.message);
+      }
+    }).done(function() {
+      foswiki.loadTemplate({
+        "name": "edit.chapter",
+        "expand": "dialog",
+        "topic": opts.web + "." + opts.topic,
+        "baseweb": opts.baseWeb,
+        "basetopic": opts.baseTopic,
+        "from": opts.from,
+        "to": opts.to,
+        "title": opts.title,
+        "id": opts.id,
+        "t": (new Date()).getTime()
+      }).done(function(data) {
+        var $content = $(data.expand);
+
+        $content.hide();
+        $("body").append($content);
+        $content.data("autoOpen", true).on("dialogopen", function() {
+          $this.trigger("opened");
+        });
+      });
+    }).fail(function(xhr, textStatus, err) {
+      var json = xhr.responseJSON;
+      if (typeof(json) === 'undefined') {
+        $.pnotify({
+           title: "Error",
+           text: "undefined error message",
+           type: 'error'
+        });
+      } else {
+        $.pnotify({
+           title: "Error",
+           text: json.error.message,
+           type: 'error'
+        });
       }
     });
 
@@ -49,7 +70,7 @@ jQuery(function($) {
   });
 
   // init edit form
-  $(".ecpForm:not(.ecpInitedForm)").livequery(function() {
+  $(".ecpForm").livequery(function() {
     var $this = $(this),
         topic = $this.find("input[name='topic']").val(),
         $dialog = $this.parent(),
@@ -86,7 +107,7 @@ jQuery(function($) {
     });
 
     // concat before submit
-    $this.addClass("ecpInitedForm").submit(function() {
+    $this.on("submit", function() {
       var editor;
 
       // prevent an endless loop
@@ -117,7 +138,7 @@ jQuery(function($) {
         }
         text.val(before.val()+chapterText+after.val());
 
-        $this.submit();
+        $this.trigger("submit");
       }
 
       // let editor kick in and do its thing before we snag the textarea's value
@@ -144,18 +165,4 @@ jQuery(function($) {
 
   });
 
-  // init 
-  $(".ecpHeading:not(.ecpDisabled)").livequery(function() {
-    var $this = $(this);
-
-    $this.hoverIntent({
-      timeout: 500,
-      over: function(event) {
-        $this.addClass('ecpHover');
-      },
-      out: function(event) {
-        $this.removeClass('ecpHover');
-      }
-    });
-  });
-});
+})(jQuery);

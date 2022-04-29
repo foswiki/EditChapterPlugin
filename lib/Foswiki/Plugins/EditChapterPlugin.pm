@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2018 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2022 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,13 +23,12 @@ use Foswiki::Plugins();
 use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '5.00';
-our $RELEASE = '12 Nov 2019';
+our $VERSION = '6.00';
+our $RELEASE = '29 Apr 2022';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'An easy section editing facility';
 our $core;
 
-###############################################################################
 sub initPlugin {
 
   Foswiki::Func::registerTagHandler('EXTRACTCHAPTER', sub {
@@ -47,26 +46,23 @@ sub initPlugin {
   return 1;
 }
 
-###############################################################################
 sub getCore {
   my $session = shift || $Foswiki::Plugins::SESSION;
 
   unless ($core) {
     require Foswiki::Plugins::EditChapterPlugin::Core;
-    $core = new Foswiki::Plugins::EditChapterPlugin::Core($session);
+    $core = Foswiki::Plugins::EditChapterPlugin::Core->new($session);
   }
 
   return $core;
 }
 
-###############################################################################
 sub finishPlugin {
   $core->finish() if defined $core;
 
   undef $core;
 }
 
-###############################################################################
 sub commonTagsHandler {
   ### my ( $text, $topic, $web, $meta ) = @_;
 
