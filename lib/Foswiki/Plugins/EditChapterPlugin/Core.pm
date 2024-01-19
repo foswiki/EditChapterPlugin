@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2022 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2024 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -65,24 +65,7 @@ sub new {
 
   $this->{_enabled}{$this->{baseWeb}.'.'.$this->{baseTopic}} = $enabled;
 
-  Foswiki::Func::addToZone('head', 'EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI');
-<link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpstyles.css" type="text/css" media="all" />
-HERE
-  Foswiki::Func::addToZone('script', 'EDITCHAPTERPLUGIN', <<'HERE', 'JQUERYPLUGIN::FOSWIKI, JQUERYPLUGIN::HOVERINTENT, JQUERYPLUGIN::PNOTIFY');
-<script src="%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/ecpjavascript.js"></script>
-HERE
-
-  if ($Foswiki::cfg{Validation}{Method} ne 'none') {
-    # make sure strikeone.js is loaded even though there isn't a form on the page yet.
-    Foswiki::Func::addToZone( 'script', 'JavascriptFiles/strikeone', <<'JS' );
-<script src="%PUBURLPATH%/%SYSTEMWEB%/JavascriptFiles/strikeone.js"></script>
-JS
-  }
-
-  Foswiki::Plugins::JQueryPlugin::createPlugin("hoverintent");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("FoswikiTemplate");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("jsonrpc");
-  Foswiki::Plugins::JQueryPlugin::createPlugin("pnotify");
+  Foswiki::Plugins::JQueryPlugin::createPlugin("EditChapter");
 
   return bless($this, $class);
 }
@@ -523,9 +506,9 @@ sub plainify {
   $text =~ s/<[^>]*>//g;        # remove all HTML tags
   $text =~ s/[\[\]\*\|=_\&\<\>]/ /g;    # remove Wiki formatting chars
   $text =~ s/^\-\-\-+\+*\s*\!*/ /gm;    # remove heading formatting and hbar
-  $text =~ s/^\s+//o;                   # remove leading whitespace
-  $text =~ s/\s+$//o;                   # remove trailing whitespace
-  $text =~ s/['"]//o;
+  $text =~ s/^\s+//;                   # remove leading whitespace
+  $text =~ s/\s+$//;                   # remove trailing whitespace
+  $text =~ s/['"]//;
   $text =~ s/%\w+(?:\{.*?\})?%//g;          # remove macros
   $text =~ s/##.*?#//g;          # remove any explicit numbering stuff
   $text =~ s/#//g;          # remove any explicit numbering stuff

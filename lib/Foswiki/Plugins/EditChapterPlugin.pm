@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2008-2022 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2008-2024 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,16 +20,19 @@ use warnings;
 
 use Foswiki::Func();
 use Foswiki::Plugins();
-use Foswiki::Plugins::JQueryPlugin ();
 use Foswiki::Contrib::JsonRpcContrib ();
+use Foswiki::Plugins::JQueryPlugin ();
 
-our $VERSION = '6.00';
-our $RELEASE = '29 Apr 2022';
+our $VERSION = '7.00';
+our $RELEASE = '%$RELEASE%';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'An easy section editing facility';
+our $LICENSECODE = '%$LICENSECODE%';
 our $core;
 
 sub initPlugin {
+
+  Foswiki::Plugins::JQueryPlugin::registerPlugin("EditChapter", 'Foswiki::Plugins::EditChapterPlugin::JQuery');
 
   Foswiki::Func::registerTagHandler('EXTRACTCHAPTER', sub {
     return getCore(shift)->handleEXTRACTCHAPTER(@_);

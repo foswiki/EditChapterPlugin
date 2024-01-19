@@ -2,6 +2,7 @@
 data/System/EditChapterPlugin.txt 0644
 lib/Foswiki/Plugins/EditChapterPlugin/Core.pm 0644
 lib/Foswiki/Plugins/EditChapterPlugin/DEPENDENCIES 0644
+lib/Foswiki/Plugins/EditChapterPlugin/JQuery.pm 0644
 lib/Foswiki/Plugins/EditChapterPlugin.pm 0644
 locale/EditChapterPlugin/bg.po 0644
 locale/EditChapterPlugin/cs.po 0644

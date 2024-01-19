@@ -1,7 +1,7 @@
 /*
  * EditChapterPlugin
  *
- * Copyright (C) 2008-2021 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (C) 2008-2024 Michael Daum http://michaeldaumconsulting.com
  *
  * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
  *
