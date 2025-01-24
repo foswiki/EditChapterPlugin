@@ -17,20 +17,31 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 1.1.0\n"
 
-#: templates/edit.chapter.tmpl:21
+#: templates/edit.chapter.tmpl:40
 msgid "Cancel"
 msgstr "Rezygnacja"
 
-#: templates/edit.chapter.tmpl:22
+#: templates/edit.chapter.tmpl:34
+msgid "Creates a new topic revision when saving"
+msgstr ""
+
+#: templates/edit.chapter.tmpl:41
 #, fuzzy
 msgid "Edit all"
 msgstr "Edycja tabeli"
 
-#: templates/edit.chapter.tmpl:7
+#: templates/edit.chapter.tmpl:8
 msgid "Edit chapter '%1'"
 msgstr ""
 
-#: templates/edit.chapter.tmpl:20
+#: templates/edit.chapter.tmpl:35
+msgid "Force new revision"
+msgstr ""
+
+#: templates/edit.chapter.tmpl:39
 msgid "Save"
 msgstr "Zapisz"
 
+#: templates/edit.chapter.tmpl:29
+msgid "Summary of changes"
+msgstr ""

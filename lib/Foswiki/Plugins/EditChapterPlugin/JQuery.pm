@@ -1,6 +1,6 @@
 # Extension for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# JQuery EditChapterPlugin is Copyright (C) 2023-2024 Michael Daum 
+# JQuery EditChapterPlugin is Copyright (C) 2023-2025 Michael Daum 
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,9 +32,9 @@ sub new {
       version => $Foswiki::Plugins::EditChapterPlugin::VERSION,
       author => 'Michael Daum',
       homepage => 'https://foswiki.org/Extensions/EditChapterPlugin',
-      javascript => ['ecpjavascript.js'],
-      css => ['ecpstyles.css'],
-      puburl => '%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin',
+      javascript => ['editChapter.js'],
+      css => ['editChapter.css'],
+      puburl => '%PUBURLPATH%/%SYSTEMWEB%/EditChapterPlugin/build',
       dependencies => ['hoverintent', 'foswikitemplate', 'jsonrpc', 'pnotify'],
     ),
     $class

@@ -1,7 +1,7 @@
 /*
  * EditChapterPlugin
  *
- * Copyright (C) 2008-2024 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (C) 2008-2025 Michael Daum http://michaeldaumconsulting.com
  *
  * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
  *
@@ -108,7 +108,7 @@
 
     // concat before submit
     $this.on("submit", function() {
-      var editor;
+      var editor = $this.find(".natedit").data("natedit");
 
       // prevent an endless loop
       if (insideSubmit) {
@@ -125,7 +125,8 @@
             after = $this.find('[name=aftertext]'),
             chapter = $this.find('[name=chapter]'),
             text = $this.find("[name=text]"),
-            chapterText, lastChar;
+            chapterText, lastChar,
+            beforeText, afterText;
 
         if (!before.length || !after.length || !chapter.length) {
           return false;
@@ -136,13 +137,21 @@
         if (lastChar != '\n') {
           chapterText += '\n';
         }
-        text.val(before.val()+chapterText+after.val());
+
+        if (editor.engine && editor.engine.type === "wysiwyg") {
+          beforeText = "<div class='WYSIWYG_PROTECTED'>"+before.val()+"</div>";
+          afterText = "<div class='WYSIWYG_PROTECTED'>"+after.val()+"</div>";
+        } else {
+          beforeText = before.val();
+          afterText = after.val();
+        }
+
+        text.val(beforeText + chapterText + afterText);
 
         $this.trigger("submit");
       }
 
       // let editor kick in and do its thing before we snag the textarea's value
-      editor = $this.find(".natedit").data("natedit");
       if (typeof(editor) === 'undefined') {
         doit();
       } else {

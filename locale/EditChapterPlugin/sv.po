@@ -16,21 +16,32 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.1\n"
 
-#: templates/edit.chapter.tmpl:21
+#: templates/edit.chapter.tmpl:40
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: templates/edit.chapter.tmpl:22
+#: templates/edit.chapter.tmpl:34
+msgid "Creates a new topic revision when saving"
+msgstr ""
+
+#: templates/edit.chapter.tmpl:41
 #, fuzzy
 msgid "Edit all"
 msgstr "Redigera tabell"
 
-#: templates/edit.chapter.tmpl:7
+#: templates/edit.chapter.tmpl:8
 msgid "Edit chapter '%1'"
 msgstr ""
 
-#: templates/edit.chapter.tmpl:20
+#: templates/edit.chapter.tmpl:35
+msgid "Force new revision"
+msgstr ""
+
+#: templates/edit.chapter.tmpl:39
 #, fuzzy
 msgid "Save"
 msgstr "Sparat i:"
 
+#: templates/edit.chapter.tmpl:29
+msgid "Summary of changes"
+msgstr ""

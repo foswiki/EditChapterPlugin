@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1573555339" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1737738105" format="1.1"  version="1"}%
 ---+!! %TOPIC%
 %FORMFIELD{"Description"}%
 
@@ -9,7 +9,7 @@ the one available for [[http://en.wikipedia.org/wiki/Help:Section#Section_editin
 It adds link urls to headings so that users can edit the section below. Edit links are
 enabeld only for those users that have edit access. Edit links are hidden unless you hover
 with the mouse pointer over them and then displays an icon, defaulting to a pencil
-<img src="%PUBURLPATH%/%WEB%/%TOPIC%/pencil.png" border="0" />.
+%JQICON{"fa-pencil"}%
 
 Once installed, the plugin automatically enables sectional editing without any further
 provisions. Note, that it will only detect headings created using TML (topic markup language), that is
@@ -27,14 +27,13 @@ There are a couple of preference variables to influence how and which headings a
 | EDITCHAPTERPLUGIN_MAXDEPTH | max depth of headings to edit | 6 | 
 | EDITCHAPTERPLUGIN_EDITIMG \
 | icon to be used in the edit link \
-| =&lt;img src="%$nopPUBURLPATH%/%<nop>SYSTEMWEB%/EditChapterPlugin/uweb-g.gif" height="16" width="16" border="0" />= | 
+| =%<nop>JQICON{"fa-pencil"}%= |
 | EDITCHAPTERPLUGIN_EDITLABELFORMAT \
 | full format string to render the detected heading of a chapter \
 | =&lt;span class="ecpHeading">$anchor&lt;/a>$heading&lt;a class="ecpEdit" href="$url" title="Edit this chapter">$img&lt;/a>&lt;/span>= |
 | EDITCHAPTERPLUGIN_ENABLED \
 | variable to enable/disable the EditChapterPlugin \
 | on |
-
 
 ---++ Syntax
 
@@ -105,7 +104,6 @@ This is an error.
 </div>
 </verbatim>
 
-
 ---++ Limitations
 For the purpose of simplicity a couple of shortcomings have to be accepted.
 
@@ -129,6 +127,8 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
 ---++ Change History
 
 %TABLE{columnwidths="7em" tablewidth="100%"}%
+|  25 Jam 2025: | reorganize js and css, update docu, remove outdated files |
+|  16 Jan 2025: | compatibility with newer !NatEditPlugin |
 |  19 Jan 2024: | made js and css a proper jQuery module |
 |  29 Apr 2022: | fixed error handling in case of a lock; \
                   add support for "force new revision" and !RevCommentPlugin; \
@@ -175,11 +175,11 @@ For the purpose of simplicity a couple of shortcomings have to be accepted.
 
 %META:FORM{name="PackageForm"}%
 %META:FIELD{name="Author" title="Author" value="Michael Daum"}%
-%META:FIELD{name="Copyright" title="Copyright" value="2008-2024, Michael Daum"}%
+%META:FIELD{name="Version" title="Version" value="%25$VERSION%25"}%
+%META:FIELD{name="Release" title="Release" value="%25$RELEASE%25"}%
 %META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
-%META:FIELD{name="Home" title="Home" value="Foswiki:Extensions/EditChapterPlugin"}%
-%META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%
-%META:FIELD{name="Release" title="Release" value="%$RELEASE%"}%
 %META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/EditChapterPlugin"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2008-2025, Michael Daum"}%
+%META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%
+%META:FIELD{name="Home" title="Home" value="Foswiki:Extensions/EditChapterPlugin"}%
 %META:FIELD{name="Support" title="Support" value="Foswiki:Support/EditChapterPlugin"}%
-%META:FIELD{name="Version" title="Version" value="%$VERSION%"}%

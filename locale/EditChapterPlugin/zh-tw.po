@@ -20,19 +20,31 @@ msgstr ""
 "X-Poedit-Country: Taiwan\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: templates/edit.chapter.tmpl:21
+#: templates/edit.chapter.tmpl:40
 msgid "Cancel"
 msgstr "取消"
 
-#: templates/edit.chapter.tmpl:22
+#: templates/edit.chapter.tmpl:34
+msgid "Creates a new topic revision when saving"
+msgstr ""
+
+#: templates/edit.chapter.tmpl:41
 #, fuzzy
 msgid "Edit all"
 msgstr "可編輯"
 
-#: templates/edit.chapter.tmpl:7
+#: templates/edit.chapter.tmpl:8
 msgid "Edit chapter '%1'"
 msgstr ""
 
-#: templates/edit.chapter.tmpl:20
+#: templates/edit.chapter.tmpl:35
+msgid "Force new revision"
+msgstr ""
+
+#: templates/edit.chapter.tmpl:39
 msgid "Save"
 msgstr "儲存"
+
+#: templates/edit.chapter.tmpl:29
+msgid "Summary of changes"
+msgstr ""
